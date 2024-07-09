@@ -1,11 +1,20 @@
 spring:
   application:
-    name: data-jpa
+  name: data-jpa
 
   datasource:
-    url: jdbc:mysql://localhost:3306/example
+    url: jdbc:mysql://localhost:3306/example?useUnicode=true&characterEncoding=utf8mb4
     username: root
     password: 1234
     driver-class-name: com.mysql.jdbc.Driver
-  jpa:
+    hikari:
+      data-source-properties:
+        useUnicode: true
+        characterEncoding: UTF-8
     database-platform: org.hibernate.dialect.MySQLDialect
+  jpa:
+    properties:
+      hibernate:
+        connection:
+          useUnicode: true
+          characterEncoding: utf8
