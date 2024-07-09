@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
-import java.util.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 
 @SpringBootTest
 class StockServiceTest {
@@ -23,18 +24,38 @@ class StockServiceTest {
 
     @BeforeEach
     fun setUp() {
-        id = stockRepository.saveAndFlush(Stock(productId = 1L, quantity = 10)).id
+        id = stockRepository.saveAndFlush(Stock(productId = 1L, quantity = 100)).id
     }
 
     @Test
     fun decrease() {
         // Given
-        val quantity = 5
+        val quantity = 1
 
         // When
         stockService.decrease(id!!, quantity)
 
         // Then
-        Assertions.assertEquals(stockRepository.findByIdOrNull(id!!)!!.quantity, 5)
+        Assertions.assertEquals(stockRepository.findByIdOrNull(id!!)!!.quantity, 99)
+    }
+
+    @Test
+    fun decreaseAsynchronously() {
+
+        val threadCnt = 100
+        val executorService = Executors.newFixedThreadPool(32)
+        val latch = CountDownLatch(100)
+        for (i in 0 until threadCnt) {
+            executorService.submit {
+                try {
+                    stockService.decrease(id!!, 1)
+                } finally {
+                    latch.countDown()
+                }
+            }
+        }
+
+        latch.await()
+        Assertions.assertEquals(stockRepository.findByIdOrNull(id!!)!!.quantity, 0)
     }
 }

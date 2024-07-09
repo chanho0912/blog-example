@@ -4,7 +4,6 @@ import com.noah.datajpa.lock.repository.StockRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
 class StockService(
