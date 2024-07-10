@@ -43,6 +43,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.register("prepareKotlinBuildScriptModel") {}
+
 allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")

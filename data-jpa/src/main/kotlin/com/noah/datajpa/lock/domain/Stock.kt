@@ -28,7 +28,7 @@ class Stock(
         protected set
 
     fun decrease(quantity: Int) {
-        require(this.quantity > quantity) { "Stock is not enough" }
+        require(this.quantity >= quantity) { "Stock is not enough" }
         this.quantity -= quantity
     }
 }

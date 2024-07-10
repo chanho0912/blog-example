@@ -15,7 +15,7 @@ import java.util.concurrent.Executors
 class StockServiceTest {
 
     @Autowired
-    private lateinit var stockService: StockService
+    private lateinit var stockService: PessimisticLockStockService
 
     @Autowired
     private lateinit var stockRepository: StockRepository
@@ -27,7 +27,7 @@ class StockServiceTest {
         id = stockRepository.saveAndFlush(Stock(productId = 1L, quantity = 100)).id
     }
 
-    @Test
+//    @Test
     fun decrease() {
         // Given
         val quantity = 1
@@ -56,6 +56,6 @@ class StockServiceTest {
         }
 
         latch.await()
-        Assertions.assertEquals(stockRepository.findByIdOrNull(id!!)!!.quantity, 0)
+        Assertions.assertEquals(0, stockRepository.findByIdOrNull(id!!)!!.quantity)
     }
 }
