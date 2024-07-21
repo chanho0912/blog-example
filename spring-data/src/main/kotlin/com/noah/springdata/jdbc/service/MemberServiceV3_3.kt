@@ -2,6 +2,7 @@ package com.noah.springdata.jdbc.service
 
 import com.noah.springdata.jdbc.repository.MemberRepositoryV3
 import mu.KotlinLogging
+import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.DefaultTransactionDefinition
@@ -10,13 +11,13 @@ import org.springframework.transaction.support.TransactionTemplate
 /**
  * 트랜잭션 - @Transactional AOP
  */
-class MemberServiceV3_3(
+open class MemberServiceV3_3(
     private val repository: MemberRepositoryV3
 ) {
     val logger = KotlinLogging.logger { }
 
     @Transactional
-    fun accountTransfer(fromId: String, toId: String, money: Int) {
+    open fun accountTransfer(fromId: String, toId: String, money: Int) {
         bizLogic(fromId, toId, money)
     }
 
