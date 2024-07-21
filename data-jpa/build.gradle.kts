@@ -1,7 +1,11 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("example-data-jpa")
+    id(Plugins.SPRING_BOOT)
+    id(Plugins.DEPENDENCY_MANAGEMENT)
+    id(Plugins.KOTLIN_SPRING) version PluginVersions.KOTLIN
+    id(Plugins.KOTLIN_JPA) version PluginVersions.KOTLIN
+    id(Plugins.EXAMPLE_DATA_JPA)
 }
 
 repositories {
@@ -11,9 +15,10 @@ repositories {
 dependencies {
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf(ProjectConfigs.JSR_305)
+        jvmTarget = ProjectConfigs.JVM
     }
 }
 

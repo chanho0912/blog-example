@@ -59,3 +59,7 @@ TransactionManager & TransactionSynchronizationManager
 2. 트랜잭션 매니저는 트랜잭션이 시작된 커넥션을 트랜잭션 동기화 매니저에 보관
 3. 리포지토리는 트랜잭션 동기화 매니저에 보관된 커넥션을 꺼내서 사용. 따라서 파라미터로 커넥션을 전달하지 않아도 된다.
 4. 트랜잭션이 종료되면 트랜잭션 매니저는 트랜잭션 동기화 매니저에 보관된 커넥션을 통해 트랜잭션을 종료하고 커넥션을 닫는다.
+
+BeanFactoryTransactionAttributeSourceAdvisor
+TransactionAttributeSourcePointcut
+TransactionInterceptor
