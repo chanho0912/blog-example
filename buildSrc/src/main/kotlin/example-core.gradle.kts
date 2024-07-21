@@ -11,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    implementation(Dependencies.Lib.KOTLIN)
-    testImplementation(Dependencies.TestLib.KOTLIN_TEST)
+    implementation(ProjectDependencies.Lib.KOTLIN)
+    testImplementation(ProjectDependencies.TestLib.KOTLIN_TEST)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

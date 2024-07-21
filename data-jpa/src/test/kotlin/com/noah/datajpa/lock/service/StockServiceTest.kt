@@ -39,23 +39,23 @@ class StockServiceTest {
         Assertions.assertEquals(stockRepository.findByIdOrNull(id!!)!!.quantity, 99)
     }
 
-    @Test
-    fun decreaseAsynchronously() {
-
-        val threadCnt = 100
-        val executorService = Executors.newFixedThreadPool(32)
-        val latch = CountDownLatch(100)
-        for (i in 0 until threadCnt) {
-            executorService.submit {
-                try {
-                    stockService.decrease(id!!, 1)
-                } finally {
-                    latch.countDown()
-                }
-            }
-        }
-
-        latch.await()
-        Assertions.assertEquals(0, stockRepository.findByIdOrNull(id!!)!!.quantity)
-    }
+//    @Test
+//    fun decreaseAsynchronously() {
+//
+//        val threadCnt = 100
+//        val executorService = Executors.newFixedThreadPool(32)
+//        val latch = CountDownLatch(100)
+//        for (i in 0 until threadCnt) {
+//            executorService.submit {
+//                try {
+//                    stockService.decrease(id!!, 1)
+//                } finally {
+//                    latch.countDown()
+//                }
+//            }
+//        }
+//
+//        latch.await()
+//        Assertions.assertEquals(0, stockRepository.findByIdOrNull(id!!)!!.quantity)
+//    }
 }

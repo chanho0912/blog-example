@@ -1,4 +1,4 @@
-object Dependencies {
+object ProjectDependencies {
     object Lib {
         val KOTLIN = listOf(
             "org.jetbrains.kotlin:kotlin-reflect",

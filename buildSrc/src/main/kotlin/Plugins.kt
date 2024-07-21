@@ -9,5 +9,5 @@ object Plugins {
 }
 
 object PluginVersions {
-    const val KOTLIN = "1.7.21"
+    const val KOTLIN = "1.9.20"
 }
