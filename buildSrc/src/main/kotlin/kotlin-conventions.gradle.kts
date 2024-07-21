@@ -1,6 +1,3 @@
-import gradle.kotlin.dsl.accessors._fa393d92bf243f86e14930a7cb20dbb9.implementation
-import gradle.kotlin.dsl.accessors._fa393d92bf243f86e14930a7cb20dbb9.testImplementation
-
 plugins {
     id("java-conventions")
 
