@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import javax.sql.DataSource
 
+/**
+ * DataSource와 TransactionManager는 스프링 부트에서 자동으로 등록.
+ */
 @TestConfiguration
 class TestConfig2 {
     @Bean
