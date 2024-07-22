@@ -1,8 +1,6 @@
 package com.noah.springdata.blog.service
 
 import com.noah.springdata.jdbc.connection.DBConnectionUtil
-import com.noah.springdata.jdbc.repository.MemberRepositoryV0
-import com.noah.springdata.jdbc.repository.MemberRepositoryV0.Companion
 import mu.KotlinLogging
 import java.sql.Connection
 import java.sql.PreparedStatement
@@ -57,7 +55,7 @@ class SimpleJDBCService {
             } else throw NoSuchElementException("id=$id")
 
         } catch (e: SQLException) {
-            Companion.logger.error { "Error: ${e.message}" }
+            logger.error { "Error: ${e.message}" }
             throw e
         } finally {
             close(connection, pstmt, rs)
@@ -74,7 +72,7 @@ class SimpleJDBCService {
             try {
                 rs.close()
             } catch (e: SQLException) {
-                MemberRepositoryV0.logger.error { "Error: ${e.message}" }
+                logger.error { "Error: ${e.message}" }
             }
         }
 
@@ -82,7 +80,7 @@ class SimpleJDBCService {
             try {
                 pstmt.close()
             } catch (e: SQLException) {
-                MemberRepositoryV0.logger.error { "Error: ${e.message}" }
+                logger.error { "Error: ${e.message}" }
             }
         }
 
@@ -90,7 +88,7 @@ class SimpleJDBCService {
             try {
                 con.close()
             } catch (e: SQLException) {
-                MemberRepositoryV0.logger.error { "Error: ${e.message}" }
+                logger.error { "Error: ${e.message}" }
             }
         }
     }
