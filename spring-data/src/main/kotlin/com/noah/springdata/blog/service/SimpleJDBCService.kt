@@ -33,7 +33,7 @@ class SimpleJDBCService {
         }
     }
 
-    fun findById(id: Int) {
+    fun findById(id: Int): Pair<Int, String> {
         val sql = """
             select * from t1 where id = ?
         """.trimIndent()
@@ -48,8 +48,12 @@ class SimpleJDBCService {
             pstmt.setInt(1, id)
             rs = pstmt.executeQuery()
 
-            if (rs.next()) {
+            return if (rs.next()) {
                 logger.info { "id:${rs.getInt("id")} - name:${rs.getString("name")}" }
+                Pair<Int, String>(
+                    rs.getInt("id"),
+                    rs.getString("name")
+                )
             } else throw NoSuchElementException("id=$id")
 
         } catch (e: SQLException) {
