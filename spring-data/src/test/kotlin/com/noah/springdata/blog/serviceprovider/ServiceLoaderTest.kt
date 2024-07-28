@@ -15,7 +15,7 @@ class ServiceLoaderTest : StringSpec({
         val iter = loadedImplementation.iterator()
 
         while (iter.hasNext()) {
-            logger.info { iter.next()::class.java.simpleName }
+            logger.info { iter.next().sampling() }
         }
     }
 })
