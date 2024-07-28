@@ -1,3 +1,3 @@
 rootProject.name = "blog-example"
 
-include("data-jpa", "spring-data")
+include("data-jpa", "spring-data", "java-example")
