@@ -63,3 +63,22 @@ TransactionManager & TransactionSynchronizationManager
 BeanFactoryTransactionAttributeSourceAdvisor
 TransactionAttributeSourcePointcut
 TransactionInterceptor
+
+Spring이 제공하는 데이터 접근 계층의 예외 중 최상위는 org.springframework.dao.DataAccessException.
+스프링이 제공하는 데이터 접근 계층의 모든 예외는 런타임 예외임.
+
+DataAccessException은 다시 크게 두 분류로 나누어짐
+NonTransient 예외와 Transient 예외
+
+Transient : 일시적
+즉 동일한 SQL을 다시 시도했을 때 성공할 가능성이 있다.
+Query Timeout, Lock...
+
+NonTransient : 일시적이지 않음.
+SQL 문법 오류, 데이터베이스 제약조건 위배...
+
+NestedExceptionUtils << 알아두면 언젠간 쓰려나?
+
+[//]: # (SpringExceptionTranslator)
+sql-error-codes.xml
+파일을 보면 각각 db마다 에러 코드, 그에 맞는 예외가 모두 정의되어 있음.
