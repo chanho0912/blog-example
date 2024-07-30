@@ -4,6 +4,7 @@ import com.noah.springdata.jdbc.domain.Member
 import com.noah.springdata.jdbc.repository.MemberRepository
 import com.noah.springdata.jdbc.repository.MemberRepositoryV4_1
 import com.noah.springdata.jdbc.repository.MemberRepositoryV4_2
+import com.noah.springdata.jdbc.repository.MemberRepositoryV5
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.assertThrows
@@ -18,7 +19,8 @@ class TestConfig3 {
     @Bean
     fun memberRepositoryV3(dataSource: DataSource): MemberRepository =
 //        MemberRepositoryV4_1(dataSource)
-        MemberRepositoryV4_2(dataSource)
+//        MemberRepositoryV4_2(dataSource)
+        MemberRepositoryV5(dataSource)
 
     @Bean
     fun memberServiceV3_3(repository: MemberRepository): MemberServiceV4 = MemberServiceV4(repository)
