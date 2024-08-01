@@ -20,11 +20,9 @@ class InMemoryItemRepository : ItemRepository {
                     price = updateCommand.price,
                     quantity = updateCommand.quantity
                 )
-                store.remove(itemId)
-                store[itemId] = updated
+                store.replace(itemId, this, updated)
             }
             ?: throw NoSuchElementException("no item with itemId=$itemId")
-
     }
 
     override fun findById(id: Long): Item? {
@@ -34,11 +32,15 @@ class InMemoryItemRepository : ItemRepository {
     override fun findAll(searchCommand: ItemSearchCommand): List<Item> {
         return with(searchCommand) {
             store.values.filter { item ->
-                item.itemName.contains(this.itemName)
+                itemName == null || item.itemName.contains(itemName)
             }.filter { item ->
                 maxPrice == null || item.price <= maxPrice
             }
         }
+    }
+
+    fun clear() {
+        store.clear()
     }
 
     companion object {
