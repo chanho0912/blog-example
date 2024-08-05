@@ -6,16 +6,34 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.TransactionStatus
+import org.springframework.transaction.support.DefaultTransactionDefinition
+import org.springframework.transaction.support.DefaultTransactionStatus
+import org.springframework.transaction.support.SimpleTransactionStatus
 
+/**
+ * Test는 다른 Test와 격리되는 것이 중요
+ * Test는 반복해서 실행할 수 있어야 한다.
+ */
 @SpringBootTest
 class ItemRepositoryTest(
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
+    private val txManager: PlatformTransactionManager
 ) : FunSpec({
+    var status: TransactionStatus = SimpleTransactionStatus()
+
+    beforeEach {
+        status = txManager.getTransaction(DefaultTransactionDefinition())
+    }
 
     afterEach {
         if (itemRepository is InMemoryItemRepository) {
             itemRepository.clear()
         }
+
+        txManager.rollback(status)
     }
 
     test("save") {
@@ -44,14 +62,14 @@ class ItemRepositoryTest(
     }
 
     test("findAll") {
-        val item1 = Item(itemName = "itemA-1", price = 10000, quantity = 10)
-        val item2 = Item(itemName = "itemA-2", price = 20000, quantity = 20)
-        val item3 = Item(itemName = "itemB-1", price = 30000, quantity = 30)
+        var item1 = Item(itemName = "itemA-1", price = 10000, quantity = 10)
+        var item2 = Item(itemName = "itemA-2", price = 20000, quantity = 20)
+        var item3 = Item(itemName = "itemB-1", price = 30000, quantity = 30)
 
         itemRepository.run {
-            save(item1)
-            save(item2)
-            save(item3)
+            item1 = save(item1)
+            item2 = save(item2)
+            item3 = save(item3)
         }
 
         verify(itemRepository, null, null, item1, item2, item3)
