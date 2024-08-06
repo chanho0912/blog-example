@@ -1,7 +1,6 @@
 package com.noah.simpleitemservice.config
 
 import com.noah.simpleitemservice.repository.ItemRepository
-import com.noah.simpleitemservice.repository.jdbctemplate.JdbcTemplateItemRepositoryV1
 import com.noah.simpleitemservice.repository.jdbctemplate.JdbcTemplateItemRepositoryV2
 import com.noah.simpleitemservice.service.ItemService
 import com.noah.simpleitemservice.service.ItemServiceV1

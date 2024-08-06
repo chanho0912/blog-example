@@ -16,3 +16,10 @@ logging:
     org:
       springframework:
         jdbc: debug
+    com.noah.simpleitemservice.repository.mybatis: trace
+
+## MyBatis
+mybatis:
+  type-aliases-package: com.noah.simpleitemservice.domain
+  configuration:
+    map-underscore-to-camel-case: true

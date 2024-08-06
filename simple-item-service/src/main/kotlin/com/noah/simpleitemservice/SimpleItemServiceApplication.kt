@@ -2,6 +2,7 @@ package com.noah.simpleitemservice
 
 import com.noah.simpleitemservice.config.JdbcTemplateV2Configuration
 import com.noah.simpleitemservice.config.JdbcTemplateV3Configuration
+import com.noah.simpleitemservice.config.MyBatisConfiguration
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -16,7 +17,8 @@ import javax.sql.DataSource
 //        MemoryConfiguration::class,
 //        JdbcTemplateV1Configuration::class,
 //        JdbcTemplateV2Configuration::class,
-        JdbcTemplateV3Configuration::class,
+//        JdbcTemplateV3Configuration::class,
+        MyBatisConfiguration::class
     ]
 )
 @SpringBootApplication(scanBasePackages = ["com.noah.simpleitemservice.web"])

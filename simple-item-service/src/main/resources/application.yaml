@@ -14,3 +14,13 @@ spring:
 
 server:
   port: 8080
+
+## MyBatis
+mybatis:
+  type-aliases-package: com.noah.simpleitemservice.domain
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.noah.simpleitemservice.repository.mybatis: trace

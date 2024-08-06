@@ -15,6 +15,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // MyBatis
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
+
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("com.h2database:h2")
 
