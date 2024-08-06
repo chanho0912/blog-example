@@ -2,30 +2,34 @@ package com.noah.simpleitemservice.repository
 
 import com.noah.simpleitemservice.domain.Item
 import com.noah.simpleitemservice.repository.memory.InMemoryItemRepository
+import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.TransactionDefinition
 import org.springframework.transaction.TransactionStatus
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.DefaultTransactionDefinition
-import org.springframework.transaction.support.DefaultTransactionStatus
 import org.springframework.transaction.support.SimpleTransactionStatus
 
 /**
  * Test는 다른 Test와 격리되는 것이 중요
  * Test는 반복해서 실행할 수 있어야 한다.
  */
+@Transactional
 @SpringBootTest
 class ItemRepositoryTest(
     private val itemRepository: ItemRepository,
     private val txManager: PlatformTransactionManager
 ) : FunSpec({
-    var status: TransactionStatus = SimpleTransactionStatus()
+    extension(SpringExtension)
+
+//    var status: TransactionStatus = SimpleTransactionStatus()
 
     beforeEach {
-        status = txManager.getTransaction(DefaultTransactionDefinition())
+//        status = txManager.getTransaction(DefaultTransactionDefinition())
     }
 
     afterEach {
@@ -33,7 +37,7 @@ class ItemRepositoryTest(
             itemRepository.clear()
         }
 
-        txManager.rollback(status)
+//        txManager.rollback(status)
     }
 
     test("save") {

@@ -1,15 +1,15 @@
 spring:
   profiles:
     active: test
-  datasource:
-    url: jdbc:mysql://localhost:3306/example?useUnicode=true&characterEncoding=utf8mb4
-    username: root
-    password: 1234
-    driver-class-name: com.mysql.jdbc.Driver
-    hikari:
-      data-source-properties:
-        useUnicode: true
-        characterEncoding: UTF-8
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/example?useUnicode=true&characterEncoding=utf8mb4
+#    username: root
+#    password: 1234
+#    driver-class-name: com.mysql.jdbc.Driver
+#    hikari:
+#      data-source-properties:
+#        useUnicode: true
+#        characterEncoding: UTF-8
 
 logging:
   level:

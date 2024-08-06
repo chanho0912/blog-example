@@ -14,7 +14,7 @@ object ProjectDependencies {
             "io.kotest:kotest-runner-junit5:${TestLibVersion.KOTEST}",
             "io.kotest:kotest-framework-datatest:${TestLibVersion.KOTEST}",
             "io.kotest.extensions:kotest-extensions-wiremock:${TestLibVersion.KOTEST_WIRE_MOCK}",
-            "io.kotest.extensions:kotest-extensions-spring:1.1.1",
+            "io.kotest.extensions:kotest-extensions-spring:1.1.2",
             "io.mockk:mockk:${TestLibVersion.MOCKK}"
         )
     }
