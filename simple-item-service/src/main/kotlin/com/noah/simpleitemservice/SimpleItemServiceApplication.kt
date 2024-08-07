@@ -1,16 +1,10 @@
 package com.noah.simpleitemservice
 
-import com.noah.simpleitemservice.config.JdbcTemplateV2Configuration
-import com.noah.simpleitemservice.config.JdbcTemplateV3Configuration
-import com.noah.simpleitemservice.config.MyBatisConfiguration
+import com.noah.simpleitemservice.config.JpaConfiguration
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import org.springframework.context.annotation.Profile
-import org.springframework.jdbc.datasource.DriverManagerDataSource
-import javax.sql.DataSource
 
 @Import(
     value = [
@@ -18,7 +12,8 @@ import javax.sql.DataSource
 //        JdbcTemplateV1Configuration::class,
 //        JdbcTemplateV2Configuration::class,
 //        JdbcTemplateV3Configuration::class,
-        MyBatisConfiguration::class
+//        MyBatisConfiguration::class,
+        JpaConfiguration::class
     ]
 )
 @SpringBootApplication(scanBasePackages = ["com.noah.simpleitemservice.web"])

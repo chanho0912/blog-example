@@ -22,7 +22,7 @@ import org.springframework.transaction.support.SimpleTransactionStatus
 @SpringBootTest
 class ItemRepositoryTest(
     private val itemRepository: ItemRepository,
-    private val txManager: PlatformTransactionManager
+//    private val txManager: PlatformTransactionManager
 ) : FunSpec({
     extension(SpringExtension)
 

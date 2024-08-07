@@ -16,6 +16,12 @@ logging:
     org:
       springframework:
         jdbc: debug
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
     com.noah.simpleitemservice.repository.mybatis: trace
 
 ## MyBatis

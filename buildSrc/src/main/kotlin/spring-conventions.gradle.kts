@@ -9,6 +9,8 @@ plugins {
     // Allows to package executable jar or war archives, run Spring Boot applications, and use the dependency management
     // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/
     id("org.springframework.boot")
+
+    kotlin("plugin.jpa")
 }
 
 logger.lifecycle("Enabling Kotlin Spring plugin in module ${project.path}")
