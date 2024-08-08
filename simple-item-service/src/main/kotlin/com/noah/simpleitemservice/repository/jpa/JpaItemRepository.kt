@@ -31,7 +31,9 @@ class JpaItemRepository(
                 itemName = updateCommand.itemName,
                 price = updateCommand.price,
                 quantity = updateCommand.quantity
-            ).let { save(it) }
+            ).let { copiedItem ->
+                em.merge(copiedItem.toEntity())
+            }
     }
 
     override fun findById(id: Long): Item? {
