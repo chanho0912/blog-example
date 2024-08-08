@@ -10,6 +10,9 @@ import jakarta.persistence.TypedQuery
 import org.springframework.stereotype.Repository
 import org.springframework.util.StringUtils
 
+/**
+ * @Repository가 있으면 PersistenceExceptionTranslator를 사용해서 예외 변환을 한다.
+ */
 @Repository
 class JpaItemRepository(
     private val em: EntityManager
