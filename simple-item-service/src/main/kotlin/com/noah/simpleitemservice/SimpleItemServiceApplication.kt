@@ -1,6 +1,6 @@
 package com.noah.simpleitemservice
 
-import com.noah.simpleitemservice.config.JpaConfiguration
+import com.noah.simpleitemservice.config.SpringDataJpaConfiguration
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import
 //        JdbcTemplateV2Configuration::class,
 //        JdbcTemplateV3Configuration::class,
 //        MyBatisConfiguration::class,
-        JpaConfiguration::class
+//        JpaConfiguration::class,
+        SpringDataJpaConfiguration::class
     ]
 )
 @SpringBootApplication(scanBasePackages = ["com.noah.simpleitemservice.web"])
