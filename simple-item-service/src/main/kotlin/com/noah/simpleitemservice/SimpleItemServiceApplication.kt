@@ -1,11 +1,15 @@
 package com.noah.simpleitemservice
 
-import com.noah.simpleitemservice.config.QueryDslConfiguration
-import com.noah.simpleitemservice.config.SpringDataJpaConfiguration
-import mu.KotlinLogging
+import com.noah.simpleitemservice.config.V2Configuration
+import com.noah.simpleitemservice.repository.v2.ItemQueryRepositoryV2
+import com.noah.simpleitemservice.repository.v2.ItemRepositoryV2
+import com.noah.simpleitemservice.service.ItemService
+import com.noah.simpleitemservice.service.ItemServiceV2
+import jakarta.persistence.EntityManager
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
+import org.springframework.context.support.beans
 
 @Import(
     value = [
@@ -16,13 +20,14 @@ import org.springframework.context.annotation.Import
 //        MyBatisConfiguration::class,
 //        JpaConfiguration::class,
 //        SpringDataJpaConfiguration::class,
-        QueryDslConfiguration::class
+//        QueryDslConfiguration::class,
+//        V2Configuration::class
     ]
 )
 @SpringBootApplication(scanBasePackages = ["com.noah.simpleitemservice.web"])
 class SimpleItemServiceApplication {
 
-    private val logger = KotlinLogging.logger {}
+//    private val logger = KotlinLogging.logger {}
 
 //    @Bean
 //    @Profile("local")
@@ -47,5 +52,20 @@ class SimpleItemServiceApplication {
 }
 
 fun main(args: Array<String>) {
-    runApplication<SimpleItemServiceApplication>(*args)
+    runApplication<SimpleItemServiceApplication>(*args) {
+        addInitializers(
+            beans {
+                bean<ItemQueryRepositoryV2>() {
+                    ItemQueryRepositoryV2(ref<EntityManager>())
+                }
+
+                bean<ItemService>() {
+                    ItemServiceV2(
+                        itemRepositoryV2 = ref<ItemRepositoryV2>(),
+                        itemQueryRepositoryV2 = ref<ItemQueryRepositoryV2>(),
+                    )
+                }
+            }
+        )
+    }
 }
