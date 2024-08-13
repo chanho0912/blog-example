@@ -5,5 +5,6 @@ include(
     "spring-data",
     "java-example",
     "simple-item-service",
-    "spring-cloud:config-server"
+    "spring-cloud:config-server",
+    "spring-cloud:config-client"
 )

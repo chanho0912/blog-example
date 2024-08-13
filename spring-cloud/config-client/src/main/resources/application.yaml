@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: spring-config-client
+  config:
+    import: optional:configserver:http://localhost:8080
+
+server:
+  port: 8081

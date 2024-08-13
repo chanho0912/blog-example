@@ -5,9 +5,4 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/chanho0912/blog-example
-
-db:
-  url: http://blabla.com
-  username: ccc
-  password: something
+          uri: https://github.com/chanho0912/spring-config-sample
