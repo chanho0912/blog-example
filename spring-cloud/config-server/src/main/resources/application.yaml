@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spring-cloud
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/chanho0912/blog-example
+
+db:
+  url: http://blabla.com
+  username: ccc
+  password: something
