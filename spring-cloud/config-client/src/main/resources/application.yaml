@@ -5,6 +5,10 @@ spring:
     name: spring-config-client
   config:
     import: optional:configserver:http://localhost:8080
+  cloud:
+    config:
+      username: sa
+      password: 1234
 
 server:
   port: 8081
