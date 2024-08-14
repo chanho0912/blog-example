@@ -6,6 +6,11 @@ spring:
       server:
         git:
           uri: https://github.com/chanho0912/spring-config-sample
+          default-label: main
+          try-master-branch: false
+        encrypt:
+          enabled: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/example?useUnicode=true&characterEncoding=utf8mb4
     username: root
