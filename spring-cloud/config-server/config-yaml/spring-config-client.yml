@@ -1,0 +1,9 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+db:
+  url: '{cipher}encryptedData'
+  username: '{cipher}encryptedUsername'
+  password: '{cipher}encryptedPassword'
