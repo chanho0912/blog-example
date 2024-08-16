@@ -8,6 +8,11 @@ spring:
           uri: https://github.com/chanho0912/spring-config-sample
           default-label: main
           try-master-branch: false
+          repos:
+            spring-config-sample:
+              pattern: spring-config-sample-*
+              uri: https://github.com/chanho0912/blog-example.git
+              search-paths: spring-cloud/config-server/config-yaml
         encrypt:
           enabled: true
 

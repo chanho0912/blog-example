@@ -7,3 +7,4 @@ db:
   url: '{cipher}encryptedData'
   username: '{cipher}encryptedUsername'
   password: '{cipher}encryptedPassword'
+  somethingKey: '{cipher}encryptedSomethingKey'
