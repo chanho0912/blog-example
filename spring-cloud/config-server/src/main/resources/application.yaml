@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/chanho0912/spring-config-sample
+          uri: https://github.com/chanho0912/blog-example.git
           default-label: main
           try-master-branch: false
           repos:
