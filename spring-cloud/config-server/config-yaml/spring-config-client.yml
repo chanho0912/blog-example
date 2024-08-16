@@ -8,3 +8,4 @@ db:
   username: '{cipher}encryptedUsername'
   password: '{cipher}encryptedPassword'
   somethingKey: '{cipher}encryptedSomethingKey'
+  somethingKey2: '{cipher}encryptedSomethingKey2'
