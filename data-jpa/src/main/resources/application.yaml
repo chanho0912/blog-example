@@ -22,6 +22,15 @@ spring:
 logging:
   level:
     org:
+      hibernate:
+        resource:
+          transaction: DEBUG
       springframework:
+        orm:
+          jpa:
+            JpaTransactionManager: DEBUG
+        jdbc:
+          datasource:
+            DataSourceTransactionManager: DEBUG
         transaction:
           interceptor: TRACE
