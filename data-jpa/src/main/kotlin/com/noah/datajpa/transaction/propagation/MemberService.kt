@@ -17,4 +17,16 @@ class MemberService(
         memberRepository.save(member)
         logRepository.save(Log(message = username))
     }
+
+    @Transactional
+    fun joinV2(username: String) {
+        val member = Member(username = username)
+        memberRepository.save(member)
+        try {
+            logRepository.save(Log(message = username))
+        } catch (e: RuntimeException) {
+            logger.info { "fail to save log" }
+        }
+    }
+
 }

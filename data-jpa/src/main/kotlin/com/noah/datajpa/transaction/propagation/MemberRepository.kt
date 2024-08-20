@@ -9,7 +9,7 @@ class MemberRepository(
     private val em: EntityManager
 ) {
 
-//    @Transactional
+    @Transactional
     fun save(member: Member) {
         em.persist(member)
     }
