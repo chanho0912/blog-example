@@ -6,5 +6,6 @@ include(
     "java-example",
     "simple-item-service",
     "spring-cloud:config-server",
-    "spring-cloud:config-client"
+    "spring-cloud:config-client",
+    "hibernate"
 )
