@@ -9,7 +9,8 @@
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="1234"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/example"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+<!--            MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)-->
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>-->
 
             <!-- 옵션 -->
             <property name="hibernate.show_sql" value="true"/>
