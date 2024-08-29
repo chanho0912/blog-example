@@ -9,5 +9,5 @@ import jakarta.persistence.Table
 class Member(
     @Id
     val id: Long = 0L,
-    val name: String
+    var name: String
 )
