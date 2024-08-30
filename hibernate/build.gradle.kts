@@ -10,8 +10,11 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.hibernate:hibernate-core:6.4.9.Final")
-    implementation("jakarta.persistence:jakarta.persistence-api")
+
+    implementation(platform("org.hibernate.orm:hibernate-platform:6.4.9.Final"))
+
+    implementation("org.hibernate.orm:hibernate-core")
+    implementation("jakarta.transaction:jakarta.transaction-api")
 
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("mysql:mysql-connector-java:8.0.31")

@@ -2,6 +2,25 @@ package com.noah.hibernate
 
 import jakarta.persistence.Persistence
 
+/**
+ * 영속성 컨텍스트
+ *  JPA를 이해하는데 가장 중요한 언어
+ *  엔티티를 영구 저장하는 환경
+ *  EntityManager.persist(entity); >> DB에 저장하는 것이 아니라 영속성 컨텍스트에 저장
+ *
+ * EntityManager -> PersistenceContext
+ *  비영속 (new/transient) : 영속성 컨텍스트와 전혀 관계가 없는 상태
+ *  영속 (managed) : 영속성 컨텍스트에 관리되는 상태
+ *  준영속 (detached) : 영속성 컨텍스트에 저장되었다가 분리된 상태
+ *  삭제 (removed) : 삭제된 상태
+ *
+ * 영속성 컨텍스트의 이점
+ * 1. 1차 캐시
+ * 2. 동일성 보장
+ * 3. 트랜잭션을 지원하는 쓰기 지연
+ * 4. 변경 감지
+ * 5. 지연 로딩
+ */
 class HibernateApplication
 
 fun main(args: Array<String>) {
@@ -17,9 +36,13 @@ fun main(args: Array<String>) {
 
             try {
                 val member = em.find(Member::class.java, 1L)
-                member.name = "HelloJPA"
+                // 추가 쿼리 x
+                val member1 = em.find(Member::class.java, 1L)
+                println(member == member1)
 //                val member = Member(id = 1L, name = "noah")
 //                em.persist(member)
+//                val member = em.find(Member::class.java, 1L)
+//                member.name = "HelloJPA"
                 transaction.commit()
             } catch (e: Exception) {
                 transaction.rollback()
