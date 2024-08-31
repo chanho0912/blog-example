@@ -22,16 +22,3 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-
-//sourceSets {
-//    main {
-//        //if you truly want to override the defaults:
-//        output.setResourcesDir(file("src/main/resources/META-INF"))
-//        // Compiled Java classes should use this directory
-//        java.destinationDirectory.set(file("build/classes"))
-//    }
-//}
-//
-//tasks.named<Jar>("sourcesJar") {
-//    dependsOn(tasks.named("processResources"))
-//}

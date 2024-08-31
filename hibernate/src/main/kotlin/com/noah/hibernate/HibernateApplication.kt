@@ -1,6 +1,7 @@
 package com.noah.hibernate
 
 import jakarta.persistence.Persistence
+import org.hibernate.SessionFactory
 
 /**
  * 영속성 컨텍스트
@@ -20,6 +21,9 @@ import jakarta.persistence.Persistence
  * 3. 트랜잭션을 지원하는 쓰기 지연
  * 4. 변경 감지
  * 5. 지연 로딩
+ *
+ * flush를 하더라도 영속성 컨텍스트에 있는 데이터는 지워지지 않는다.
+ * 영속성 컨텍스트를 플러시하면 변경 감지 기능이 동작해서 수정된 엔티티를 찾아서 쿼리를 생성하고 DB에 반영한다.
  */
 class HibernateApplication
 
@@ -47,6 +51,14 @@ fun main(args: Array<String>) {
             } catch (e: Exception) {
                 transaction.rollback()
             }
+        }
+
+        // hibernate spec 직접 사용
+        emf.unwrap(SessionFactory::class.java).openSession().use { session ->
+            session.beginTransaction()
+            val member = session.get(Member::class.java, 1L)
+            println(member)
+            session.transaction.commit()
         }
     }
 }
