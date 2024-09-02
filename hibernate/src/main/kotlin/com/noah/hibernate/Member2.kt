@@ -6,6 +6,16 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
+/**
+ * GenerationType.IDENTITY인 경우 em.persist()를 호출하면 즉시 insert 쿼리가 실행된다.
+ * - 영속성 컨텍스트에 저장된 엔티티의 식별자를 알 수 없기 때문에 즉시 insert 쿼리를 실행한다.
+ * GenerationType.SEQUENCE인 경우 em.persist()를 호출하면 insert 쿼리는 실행되지 않고, sequence에서 값을 가져온다.
+ * - allocationSize: 시퀀스 한 번 호출에 증가하는 수 (default 50)
+ * - initialValue: 시작 값 (default 1)
+ * - allocationSize를 50으로 설정하면 1, 51, 101, ... 순으로 증가한다. 그 사이 값을 memory에서 사용. (추가 호출 x)
+ * GenerationType.TABLE인 경우 em.persist()를 호출하면 insert 쿼리는 실행되지 않고, table에서 값을 가져온다.
+ *
+ */
 @Entity
 @Table(name = "member_jpa_2")
 class Member2(

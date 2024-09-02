@@ -5,6 +5,10 @@
     <persistence-unit name="noah">
         <class>com.noah.hibernate.Member</class>
         <class>com.noah.hibernate.Member2</class>
+        <class>com.noah.hibernate.jpashop.domain.ItemEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.MemberEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.OrderEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.OrderItemEntity</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
