@@ -1,7 +1,6 @@
 package com.noah.hibernate
 
 import jakarta.persistence.Persistence
-import org.hibernate.SessionFactory
 
 /**
  * 영속성 컨텍스트
@@ -38,27 +37,39 @@ fun main(args: Array<String>) {
             val transaction = em.transaction
             transaction.begin()
 
+            // 양방향 연관관계를 설정할 때는 순수 객체 상태를 고려하여 양쪽에 값을 설정해야 한다.
+            // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
+            // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
 //                val member = em.find(Member::class.java, 1L)
 //                // 추가 쿼리 x
 //                val member1 = em.find(Member::class.java, 1L)
 //                println(member == member1)
 
+//                val member = Member(username = "noah", teamId = team.id)
+
                 val team = Team(name = "teamA")
+//                team.members.add(member)
                 em.persist(team)
 
-//                val member = Member(username = "noah", teamId = team.id)
-                val member = Member(username = "noah", team = team)
+                val member = Member(username = "noah")
+                member.team = team
                 em.persist(member)
 
-                em.flush()
-                em.clear()
-                
+//                em.flush()
+//                em.clear()
+
                 val findMember = em.find(Member::class.java, member.id)
 //                val findTeam = em.find(Team::class.java, findMember.teamId)
                 val findTeam = findMember.team
+                println("team id=${findMember?.teamId}, team name=${findTeam?.name}")
+                val teamMembers = findTeam?.members
 
-                println("findTeam.name=${findTeam.name}")
+                if (teamMembers != null)
+                    for (teamMember in teamMembers) {
+                        println("teamMember.username=${teamMember.username}")
+                    }
+
                 transaction.commit()
             } catch (e: Exception) {
                 transaction.rollback()
