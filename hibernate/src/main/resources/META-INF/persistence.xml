@@ -5,6 +5,7 @@
     <persistence-unit name="noah">
         <class>com.noah.hibernate.Member</class>
         <class>com.noah.hibernate.Member2</class>
+        <class>com.noah.hibernate.Team</class>
         <class>com.noah.hibernate.jpashop.domain.ItemEntity</class>
         <class>com.noah.hibernate.jpashop.domain.MemberEntity</class>
         <class>com.noah.hibernate.jpashop.domain.OrderEntity</class>

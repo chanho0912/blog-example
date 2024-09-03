@@ -39,14 +39,26 @@ fun main(args: Array<String>) {
             transaction.begin()
 
             try {
-                val member = em.find(Member::class.java, 1L)
-                // 추가 쿼리 x
-                val member1 = em.find(Member::class.java, 1L)
-                println(member == member1)
-//                val member = Member(id = 1L, name = "noah")
-//                em.persist(member)
 //                val member = em.find(Member::class.java, 1L)
-//                member.name = "HelloJPA"
+//                // 추가 쿼리 x
+//                val member1 = em.find(Member::class.java, 1L)
+//                println(member == member1)
+
+                val team = Team(name = "teamA")
+                em.persist(team)
+
+//                val member = Member(username = "noah", teamId = team.id)
+                val member = Member(username = "noah", team = team)
+                em.persist(member)
+
+                em.flush()
+                em.clear()
+                
+                val findMember = em.find(Member::class.java, member.id)
+//                val findTeam = em.find(Team::class.java, findMember.teamId)
+                val findTeam = findMember.team
+
+                println("findTeam.name=${findTeam.name}")
                 transaction.commit()
             } catch (e: Exception) {
                 transaction.rollback()
@@ -54,11 +66,11 @@ fun main(args: Array<String>) {
         }
 
         // hibernate spec 직접 사용
-        emf.unwrap(SessionFactory::class.java).openSession().use { session ->
-            session.beginTransaction()
-            val member = session.get(Member::class.java, 1L)
-            println(member)
-            session.transaction.commit()
-        }
+//        emf.unwrap(SessionFactory::class.java).openSession().use { session ->
+//            session.beginTransaction()
+//            val member = session.get(Member::class.java, 1L)
+//            println(member)
+//            session.transaction.commit()
+//        }
     }
 }
