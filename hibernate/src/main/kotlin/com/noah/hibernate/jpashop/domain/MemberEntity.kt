@@ -13,5 +13,8 @@ class MemberEntity(
     val name: String,
     val city: String,
     val street: String,
-    val zipcode: String
+    val zipcode: String,
+
+    @OneToMany(mappedBy = "member")
+    val orders: MutableList<OrderEntity> = mutableListOf()
 )

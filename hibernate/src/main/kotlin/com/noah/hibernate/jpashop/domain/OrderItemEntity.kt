@@ -10,11 +10,15 @@ class OrderItemEntity(
     @Column(name = "order_item_id")
     val id: Long = 0L,
 
-    @Column(name = "order_id")
-    val orderId: Long,
+//    @Column(name = "order_id")
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    val order: OrderEntity,
 
-    @Column(name = "item_id")
-    val itemId: Long,
+//    @Column(name = "item_id")
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    val item: ItemEntity,
 
     @Column(name = "order_price")
     val orderPrice: Int,

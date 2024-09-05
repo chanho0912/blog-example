@@ -10,14 +10,19 @@ class OrderEntity(
     @Column(name = "order_id")
     val id: Long = 0L,
 
-    @Column(name = "member_id")
-    val memberId: Long,
+//    @Column(name = "member_id")
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    val member: MemberEntity,
 
     @Column(name = "order_date")
     val orderDate: LocalDateTime,
 
     @Enumerated(EnumType.STRING)
-    val status: OrderStatus
+    val status: OrderStatus,
+
+    @OneToMany(mappedBy = "order")
+    val orderItems: MutableList<OrderItemEntity> = mutableListOf()
 )
 
 enum class OrderStatus {
