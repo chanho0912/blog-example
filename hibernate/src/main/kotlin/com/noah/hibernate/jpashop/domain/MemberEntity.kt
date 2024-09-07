@@ -21,4 +21,4 @@ class MemberEntity(
     @OneToOne
     @JoinColumn(name = "locker_id")
     val locker: LockerEntity
-)
+) : BaseEntity()

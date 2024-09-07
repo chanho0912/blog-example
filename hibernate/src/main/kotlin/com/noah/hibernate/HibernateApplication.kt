@@ -1,5 +1,6 @@
 package com.noah.hibernate
 
+import com.noah.hibernate.jpashop.domain.MovieEntity
 import jakarta.persistence.Persistence
 
 /**
@@ -49,6 +50,24 @@ import jakarta.persistence.Persistence
  * - 관계형 데이터베이스는 정규화된 테이블 2개로 다대다 관계를 표현할 수 없음
  * - 연결 테이블을 추가해서 일대다, 다대일 관계로 풀어내야함
  * - @ManyToMany 사용 x 그냥 쓰지 말고 중간 테이블을 엔티티로 승격해서 사용 (연결 테이블을 엔티티로 승격)
+ *
+ * 상속관계 매핑
+ * - 관계형 데이터베이스에는 상속 관계 x
+ * - 슈퍼타입 서브타입 관계라는 모델링 기법
+ * - 상속관계 매핑: 객체의 상속과 관계형 데이터베이스의 슈퍼타입 서브타입 관계를 매핑
+ * - 조인 전략
+ * 장점: 테이블 정규화, 외래키 참조 무결성 제약조건 활용, 저장공간 효율화
+ * 단점: 조회시 조인을 많이 사용, 조회 쿼리가 복잡, 데이터 저장시 insert sql이 두번 실행
+ * - 각각의 테이블로 변환 (사용 권장 x)
+ * 장점: 서브타입을 명확하게 구분해서 처리할 때 효과적, not null 제약조건 사용 가능
+ * 단점: 자식 테이블을 통합해서 쿼리하기 어려움 (UNION ALL SQL 사용)
+ * - 단일 테이블 전략 (JPA 기본)
+ * 장점: 조인 x, 조회 성능 빠름
+ * 단점: 자식 엔티티가 매핑한 컬럼은 모두 null 허용
+ * 기본은 Join, 테이블이 너무 단순할 때 Single Table 고려하는 방향으로
+ *
+ * @MappedSuperclass
+ * - 공통 매핑 정보가 필요할 때 사용
  */
 class HibernateApplication
 
@@ -67,34 +86,21 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-//                val member = em.find(Member::class.java, 1L)
-//                // 추가 쿼리 x
-//                val member1 = em.find(Member::class.java, 1L)
-//                println(member == member1)
+                val movie = MovieEntity(
+                    director = "director",
+                    actor = "actor",
+                    name = "name",
+                    price = 10000
+                )
+                // 저장할때는 두번 insert
+                em.persist(movie)
 
-//                val member = Member(username = "noah", teamId = team.id)
+                em.flush()
+                em.clear()
 
-                val team = Team(name = "teamA")
-//                team.members.add(member)
-                em.persist(team)
-
-                val member = Member(username = "noah")
-                member.team = team
-                em.persist(member)
-
-//                em.flush()
-//                em.clear()
-
-                val findMember = em.find(Member::class.java, member.id)
-//                val findTeam = em.find(Team::class.java, findMember.teamId)
-                val findTeam = findMember.team
-                println("team id=${findMember?.teamId}, team name=${findTeam?.name}")
-                val teamMembers = findTeam?.members
-
-                if (teamMembers != null)
-                    for (teamMember in teamMembers) {
-                        println("teamMember.username=${teamMember.username}")
-                    }
+                // 읽을때는 Join
+                val findMovie = em.find(MovieEntity::class.java, movie.id)
+                println(findMovie)
 
                 transaction.commit()
             } catch (e: Exception) {

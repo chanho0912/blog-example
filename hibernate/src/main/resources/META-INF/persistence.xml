@@ -6,6 +6,10 @@
         <class>com.noah.hibernate.Member</class>
         <class>com.noah.hibernate.Member2</class>
         <class>com.noah.hibernate.Team</class>
+        <class>com.noah.hibernate.jpashop.domain.ItemEntity2</class>
+        <class>com.noah.hibernate.jpashop.domain.BookEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.MovieEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.AlbumEntity</class>
         <class>com.noah.hibernate.jpashop.domain.ItemEntity</class>
         <class>com.noah.hibernate.jpashop.domain.DeliveryEntity</class>
         <class>com.noah.hibernate.jpashop.domain.CategoryEntity</class>
