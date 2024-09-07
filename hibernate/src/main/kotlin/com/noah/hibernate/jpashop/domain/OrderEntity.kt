@@ -18,6 +18,10 @@ class OrderEntity(
     @Column(name = "order_date")
     val orderDate: LocalDateTime,
 
+    @OneToOne
+    @JoinColumn(name = "delivery_id")
+    val delivery: DeliveryEntity,
+
     @Enumerated(EnumType.STRING)
     val status: OrderStatus,
 

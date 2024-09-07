@@ -14,5 +14,8 @@ class ItemEntity(
     val price: Int,
 
     @Column(name = "stock_quantity")
-    val stockQuantity: Int
+    val stockQuantity: Int,
+
+    @ManyToMany(mappedBy = "items")
+    val categories: MutableList<CategoryEntity> = mutableListOf()
 )

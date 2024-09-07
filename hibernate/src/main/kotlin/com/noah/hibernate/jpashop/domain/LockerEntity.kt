@@ -24,6 +24,7 @@ import jakarta.persistence.*
 @Table(name = "locker")
 class LockerEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "locker_id")
     val id: Long = 0L,
 
     val name: String
