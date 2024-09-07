@@ -16,5 +16,9 @@ class MemberEntity(
     val zipcode: String,
 
     @OneToMany(mappedBy = "member")
-    val orders: MutableList<OrderEntity> = mutableListOf()
+    val orders: MutableList<OrderEntity> = mutableListOf(),
+
+    @OneToOne
+    @JoinColumn(name = "locker_id")
+    val locker: LockerEntity
 )
