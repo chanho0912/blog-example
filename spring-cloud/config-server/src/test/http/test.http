@@ -1,0 +1,2 @@
+GET localhost:8080/permit-all
+#Authorization: Basic dXNlcjE6MTIzNA==

@@ -25,7 +25,7 @@ spring:
       data-source-properties:
         useUnicode: true
         characterEncoding: UTF-8
-  security:
-    user:
-      name: sa
-      password: 1234
+#  security:
+#    user:
+#      name: sa
+#      password: 1234
