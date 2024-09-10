@@ -7,8 +7,18 @@ spring:
     import: optional:configserver:http://localhost:8080
   cloud:
     config:
-      username: sa
+      username: user1
       password: 1234
 
 server:
   port: 8081
+
+system:
+  url: ${db.url}
+  username: ${db.username}
+  password: ${db.password}
+
+#logging:
+#  level:
+#    org:
+#      springframework: DEBUG

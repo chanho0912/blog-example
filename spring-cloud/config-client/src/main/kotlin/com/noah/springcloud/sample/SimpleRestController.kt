@@ -9,14 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@EnableConfigurationProperties(DataBaseProperty::class)
+@EnableConfigurationProperties(
+    DataBaseProperty::class,
+    SimpleRestController.SystemPropertyBindingExample::class
+)
 class SimpleRestController(
     private val dataBaseProperty: DataBaseProperty,
+    private val systemPropertyBindingExample: SystemPropertyBindingExample,
     private val environment: Environment
 ) {
 
     @ConfigurationProperties("db")
     data class DataBaseProperty(
+        val url: String,
+        val username: String,
+        val password: String
+    )
+
+    @ConfigurationProperties("system")
+    data class SystemPropertyBindingExample(
         val url: String,
         val username: String,
         val password: String
@@ -32,5 +43,8 @@ class SimpleRestController(
     fun getDb(): String {
         return environment.getProperty<String>("db.url").toString()
     }
+
+    @GetMapping("env/system")
+    fun getSystem(): SystemPropertyBindingExample = systemPropertyBindingExample
 
 }
