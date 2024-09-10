@@ -20,9 +20,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
     implementation("org.springframework.boot:spring-boot-starter-security:3.2.0")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.0")
 
 //    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
-//    implementation("io.jsonwebtoken:jjwt:0.12.0")
+    implementation("io.jsonwebtoken:jjwt:0.12.0")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("com.mysql:mysql-connector-j")

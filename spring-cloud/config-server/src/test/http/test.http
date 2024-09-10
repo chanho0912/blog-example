@@ -1,2 +1,6 @@
-GET localhost:8080/permit-all
-#Authorization: Basic dXNlcjE6MTIzNA==
+POST localhost:8080/token
+Authorization: Basic dXNlcjE6MTIzNA==
+
+###
+GET localhost:8080/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidXNlcjEiLCJleHAiOjE3MjU5NTEwNTcsImlhdCI6MTcyNTk1MDQ1Nywic2NvcGUiOiIgIn0.GsMwHHSMencyrqXTPEEOKK-oyc4hE_1VJSp00p3NG34

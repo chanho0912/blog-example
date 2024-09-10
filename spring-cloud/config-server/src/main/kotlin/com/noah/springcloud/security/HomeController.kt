@@ -1,11 +1,26 @@
 package com.noah.springcloud.security
 
+import com.noah.springcloud.jwt.JwtTokenIssueService
+import mu.KotlinLogging
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
 @RestController
-class HomeController {
+class HomeController(
+    private val tokenIssueService: JwtTokenIssueService
+) {
+    private val logger = KotlinLogging.logger {}
+
+    @PostMapping("token")
+    fun token(authentication: Authentication): String {
+        logger.info { "Token requested for user ${authentication.name}" }
+        val token = tokenIssueService.issueToken(authentication)
+        logger.info { "Token issued for user ${authentication.name} token: $token" }
+        return token
+    }
 
     @GetMapping("home")
     fun home(principal: Principal): String {

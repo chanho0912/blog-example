@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.web.client.RestTemplate
 
-
+//
 //@Configuration
 //class ConfigServiceBootstrapConfig(
 //    private val environment: ConfigurableEnvironment
 //) {
-
+//
 //    @Bean
 //    fun configServicePropertySourceLocator(
 //        configClientProperties: ConfigClientProperties
