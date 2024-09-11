@@ -24,18 +24,11 @@ class Member(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     val id: Long = 0L,
-    @Column(name = "team_id", insertable = false, updatable = false)
-    val teamId: Long = 0L,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    var team: Team? = null,
 
     @Column(name = "username")
     var username: String
-) {
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    var team: Team? = null
-//        set(value) {
-//            // 팀의 멤버에도 값을 추가
-//            field = value
-//            value?.members?.add(this)
-//        }
-}
+)

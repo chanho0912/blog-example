@@ -2,6 +2,7 @@ package com.noah.hibernate
 
 import com.noah.hibernate.jpashop.domain.MovieEntity
 import jakarta.persistence.Persistence
+import org.hibernate.Hibernate
 
 /**
  * 영속성 컨텍스트
@@ -86,21 +87,21 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-                val movie = MovieEntity(
-                    director = "director",
-                    actor = "actor",
-                    name = "name",
-                    price = 10000
-                )
-                // 저장할때는 두번 insert
-                em.persist(movie)
+                val member = Member(username = "noah")
+                em.persist(member)
+                println("after persist--------------------------------------")
 
                 em.flush()
-                em.clear()
+                println("after flush--------------------------------------")
 
-                // 읽을때는 Join
-                val findMovie = em.find(MovieEntity::class.java, movie.id)
-                println(findMovie)
+                em.clear()
+                println("after clear--------------------------------------")
+
+                // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
+                println(em.getReference(Member::class.java, member.id).javaClass)
+//                val findMember = em.getReference(Member::class.java, member.id)
+//                println("after getReference--------------------------------------")
+//                println("findMember: ${findMember.username}")
 
                 transaction.commit()
             } catch (e: Exception) {
