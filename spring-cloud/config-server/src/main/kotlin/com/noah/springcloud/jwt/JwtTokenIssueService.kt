@@ -1,9 +1,6 @@
 package com.noah.springcloud.jwt
 
-import com.nimbusds.jose.JWSAlgorithm
-import com.nimbusds.jose.JWSHeader
 import org.springframework.security.core.Authentication
-import org.springframework.security.oauth2.jose.jws.JwsAlgorithm
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm
 import org.springframework.security.oauth2.jwt.JwsHeader
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
@@ -24,15 +21,16 @@ class JwtTokenIssueService(
         val now = Instant.now()
         val scope =
             authentication.authorities.map { grantedAuthority ->
-                grantedAuthority.authority
+                grantedAuthority.authority // USER
             }
-                .joinToString { " " }
+                .joinToString()
 
         val claims = JwtClaimsSet.builder()
             .issuer("self")
             .issuedAt(now)
             .expiresAt(now.plus(10, ChronoUnit.MINUTES))
             .subject(authentication.name)
+            // 어딘가에 role을 넣어야함.
             .claim("scope", scope)
             .build()
 

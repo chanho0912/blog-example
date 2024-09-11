@@ -1,6 +1,14 @@
 POST localhost:8080/token
-Authorization: Basic dXNlcjE6MTIzNA==
-
+Authorization: Basic dXNlcjI6MTIzNA==
+### dXNlcjI6MTIzNA==
 ###
-GET localhost:8080/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidXNlcjEiLCJleHAiOjE3MjU5NTEwNTcsImlhdCI6MTcyNTk1MDQ1Nywic2NvcGUiOiIgIn0.GsMwHHSMencyrqXTPEEOKK-oyc4hE_1VJSp00p3NG34
+GET localhost:8080/
+Content-Type: text/html
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidXNlcjIiLCJleHAiOjE3MjU5NTQ4NzQsImlhdCI6MTcyNTk1NDI3NCwic2NvcGUiOiJST0xFX0FETUlOIn0.IRemJHE8qDjBeuo9xh2VPzddVfqVSjD-hGhctbaaFp0
+
+
+
+
+
+
+
