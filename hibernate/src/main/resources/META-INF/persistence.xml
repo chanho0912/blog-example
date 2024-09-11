@@ -17,6 +17,7 @@
         <class>com.noah.hibernate.jpashop.domain.MemberEntity</class>
         <class>com.noah.hibernate.jpashop.domain.OrderEntity</class>
         <class>com.noah.hibernate.jpashop.domain.OrderItemEntity</class>
+        <class>com.noah.hibernate.jpashop.domain.BaseEntity</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
