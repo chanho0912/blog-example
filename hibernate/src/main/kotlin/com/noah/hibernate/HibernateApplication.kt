@@ -1,7 +1,10 @@
 package com.noah.hibernate
 
 import com.noah.hibernate.jpashop.domain.MovieEntity
+import com.noah.hibernate.jpashop.proxy.Child
+import com.noah.hibernate.jpashop.proxy.Parent
 import jakarta.persistence.Persistence
+import jakarta.persistence.PersistenceUnitUtil
 import org.hibernate.Hibernate
 
 /**
@@ -87,8 +90,12 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-                val member = Member(username = "noah")
-                em.persist(member)
+//                val parent = Parent(1L, "parent1")
+                val child = Child()
+                child.name = "child1"
+                child.parent = null
+//                em.persist(parent)
+                em.persist(child)
                 println("after persist--------------------------------------")
 
                 em.flush()
@@ -98,10 +105,9 @@ fun main(args: Array<String>) {
                 println("after clear--------------------------------------")
 
                 // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
-                println(em.getReference(Member::class.java, member.id).javaClass)
-//                val findMember = em.getReference(Member::class.java, member.id)
-//                println("after getReference--------------------------------------")
-//                println("findMember: ${findMember.username}")
+                val reference = em.getReference(Child::class.java, 1L)
+                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
+                println("after getReference--------------------------------------")
 
                 transaction.commit()
             } catch (e: Exception) {

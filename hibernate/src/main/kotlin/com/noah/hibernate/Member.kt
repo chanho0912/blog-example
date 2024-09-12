@@ -25,7 +25,7 @@ class Member(
     @Column(name = "member_id")
     val id: Long = 0L,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "team_id")
     var team: Team? = null,
 
