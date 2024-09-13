@@ -104,11 +104,40 @@ fun main(args: Array<String>) {
                 em.clear()
                 println("after clear--------------------------------------")
 
+//                // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
+//                val reference = em.getReference(Child::class.java, 1L)
+//                println("after getReference--------------------------------------")
+//                println("reference class type = ${reference.javaClass}")
+//                val find = em.find(Child::class.java, 1L)
+//                println("after getFind--------------------------------------")
+//                println("reference class type = ${reference.javaClass}")
+//                println("find class type = ${find.javaClass}")
+//
+//                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
+//                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(find)}")
+//                println("equality ${reference.javaClass == find.javaClass}")
                 // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
-                val reference = em.getReference(Child::class.java, 1L)
-                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
-                println("after getReference--------------------------------------")
 
+                /**
+                 * 이게 처음에 reference를 조회한 뒤에 find를 조회하면 둘다 HibernateProxy 타입으로 나옴
+                 * 그런데 find를 조회한 이후에는 쿼리가 발생하고 둘다 객체가 조회된 상태로 사용할 수 있음.
+                 *
+                 * 처음에 find를 조회하면 둘다 Member타입으로 나옴
+                 *
+                 * 즉 처음 조회한게 무엇이냐에 따라 트랜잭션안에서 영원히 채워진 Proxy일 지 구체 클래스일 지 결정됨.
+                 */
+                val find = em.find(Child::class.java, 1L)
+                println("after getFind--------------------------------------")
+                println("find class type = ${find.javaClass}")
+                val reference = em.getReference(Child::class.java, 1L)
+                println("after getReference--------------------------------------")
+//                println("reference class type = ${reference.javaClass}")
+                println("reference class type = ${reference.javaClass}")
+                println("find class type = ${find.javaClass}")
+
+                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
+                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(find)}")
+                println("equality ${reference.javaClass == find.javaClass}")
                 transaction.commit()
             } catch (e: Exception) {
                 transaction.rollback()
