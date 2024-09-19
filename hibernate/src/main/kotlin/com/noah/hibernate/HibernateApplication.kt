@@ -90,19 +90,15 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-//                val parent = Parent(1L, "parent1")
-                val child = Child()
-                child.name = "child1"
-                child.parent = null
-//                em.persist(parent)
-                em.persist(child)
-                println("after persist--------------------------------------")
+                val team = Team(name = "team1")
+                em.persist(team)
+
+                val member = Member(username = "noah")
+                member.team = team
+                em.persist(member)
 
                 em.flush()
-                println("after flush--------------------------------------")
-
                 em.clear()
-                println("after clear--------------------------------------")
 
 //                // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
 //                val reference = em.getReference(Child::class.java, 1L)
@@ -126,18 +122,10 @@ fun main(args: Array<String>) {
                  *
                  * 즉 처음 조회한게 무엇이냐에 따라 트랜잭션안에서 영원히 채워진 Proxy일 지 구체 클래스일 지 결정됨.
                  */
-                val find = em.find(Child::class.java, 1L)
-                println("after getFind--------------------------------------")
-                println("find class type = ${find.javaClass}")
-                val reference = em.getReference(Child::class.java, 1L)
-                println("after getReference--------------------------------------")
-//                println("reference class type = ${reference.javaClass}")
-                println("reference class type = ${reference.javaClass}")
-                println("find class type = ${find.javaClass}")
+                val find = em.find(Member::class.java, member.id)
 
-                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
-                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(find)}")
-                println("equality ${reference.javaClass == find.javaClass}")
+                println("after access team--------------------------------------")
+                println("team = ${find.team?.name}")
                 transaction.commit()
             } catch (e: Exception) {
                 transaction.rollback()

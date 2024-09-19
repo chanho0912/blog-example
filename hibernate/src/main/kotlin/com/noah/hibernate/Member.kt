@@ -20,15 +20,15 @@ import jakarta.persistence.*
  */
 @Entity
 @Table(name = "member_jpa")
-class Member(
+open class Member(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    val id: Long = 0L,
+    open val id: Long = 0L,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
-    var team: Team? = null,
+    open var team: Team? = null,
 
     @Column(name = "username")
-    var username: String
+    open var username: String
 )
