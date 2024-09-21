@@ -1,11 +1,8 @@
 package com.noah.hibernate
 
-import com.noah.hibernate.jpashop.domain.MovieEntity
 import com.noah.hibernate.jpashop.proxy.Child
 import com.noah.hibernate.jpashop.proxy.Parent
 import jakarta.persistence.Persistence
-import jakarta.persistence.PersistenceUnitUtil
-import org.hibernate.Hibernate
 
 /**
  * 영속성 컨텍스트
@@ -90,44 +87,36 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-                val team = Team(name = "team1")
-                em.persist(team)
+                val parent = Parent()
+                parent.name = "parent"
 
-                val member = Member(username = "noah")
-                member.team = team
-                em.persist(member)
+                val child1 = Child()
+                val child2 = Child()
+                child1.name = "child1"
+                child2.name = "child2"
 
+//                parent.addChild(child1)
+//                parent.addChild(child2)
+                child1.parent = parent
+                child2.parent = parent
+
+                em.persist(parent)
+                em.persist(child1)
+                em.persist(child2)
+
+                // 영속성 컨텍스트 초기화
                 em.flush()
                 em.clear()
 
-//                // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
-//                val reference = em.getReference(Child::class.java, 1L)
-//                println("after getReference--------------------------------------")
-//                println("reference class type = ${reference.javaClass}")
-//                val find = em.find(Child::class.java, 1L)
-//                println("after getFind--------------------------------------")
-//                println("reference class type = ${reference.javaClass}")
-//                println("find class type = ${find.javaClass}")
-//
-//                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(reference)}")
-//                println("isLoaded = ${emf.persistenceUnitUtil.isLoaded(find)}")
-//                println("equality ${reference.javaClass == find.javaClass}")
-                // getReference는 항상 PK만 가진 프록시 객체를 반환한다.
+                val findParent = em.find(Parent::class.java, parent.id)
+                println("findParent id = ${findParent.id}")
+                println("findParent children = ${findParent.children.size}")
+                // orphanRemoval = true 설정 시 자식 엔티티를 삭제하면 부모 엔티티도 삭제된다.
+//                findParent.children.removeAt(0)
 
-                /**
-                 * 이게 처음에 reference를 조회한 뒤에 find를 조회하면 둘다 HibernateProxy 타입으로 나옴
-                 * 그런데 find를 조회한 이후에는 쿼리가 발생하고 둘다 객체가 조회된 상태로 사용할 수 있음.
-                 *
-                 * 처음에 find를 조회하면 둘다 Member타입으로 나옴
-                 *
-                 * 즉 처음 조회한게 무엇이냐에 따라 트랜잭션안에서 영원히 채워진 Proxy일 지 구체 클래스일 지 결정됨.
-                 */
-                val find = em.find(Member::class.java, member.id)
-
-                println("after access team--------------------------------------")
-                println("team = ${find.team?.name}")
                 transaction.commit()
             } catch (e: Exception) {
+                e.printStackTrace()
                 transaction.rollback()
             }
         }

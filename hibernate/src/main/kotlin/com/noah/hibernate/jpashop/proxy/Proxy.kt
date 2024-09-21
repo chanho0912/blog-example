@@ -23,7 +23,45 @@ package com.noah.hibernate.jpashop.proxy
  * - 가급적 지연 로딩만 사용
  * - 즉시 로딩을 적용하면 예상하지 못한 SQL이 발생
  * - 즉시 로딩은 JPQL에서 N+1 문제를 일으킨다.
+ * >> 1. FetchJoin, 2. EntityGraph 3. @BatchSize
  * - @ManyToOne, @OneToOne은 기본이 즉시 로딩 -> LAZY로 설정
  * - @OneToMany, @ManyToMany는 기본이 지연 로딩
  *
+ * 영속성 전이: CASCADE
+ * - 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들도록 설정
+ * - 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없음
+ * - 엔티티를 영속화할 때 연관된 엔티티도 함께 영속화하는 편리함을 제공
+ * - 소유자가 하나일때 사용하면 좋음.
+ * - CascadeType.ALL: 모두 적용
+ * - CascadeType.PERSIST: 영속
+ * - CascadeType.REMOVE: 삭제
+ * - CascadeType.MERGE: 병합
+ * - CascadeType.DETACH: 준영속
+ * - CascadeType.REFRESH: REFRESH
+ *
+ * JPA의 데이터 타입 분류
+ * - 엔티티 타입
+ * @Entity로 정의하는 객체
+ * 데이터가 변해도 식별자로 지속해서 추적 가능
+ * - 값 타입
+ * int, Integer, String처럼 단순 값으로 사용하는 자바 기본 타입이나 객체
+ * 식별자가 없고 값만 있으므로 변경 시 추적 불가
+ *
+ * 값 타입 분류
+ * - 기본 값 타입
+ * 자바 기본 타입(int, double)
+ * 래퍼 클래스(Integer, Long)
+ * String
+ * - 임베디드 타입(embedded type, 복합 값 타입)
+ * - 컬렉션 값 타입
+ *
+ * 기본 값 타입
+ * - 생명주기를 엔티티에 의존
+ * - 값 타입은 공유하면 x
+ *
+ * 임베디드 타입
+ * - 새로운 값 타입을 직접 정의할 수 있음
+ * - JPA는 임베디드 타입(embedded type)이라 함
+ * - 주로 기본 값 타입을 모아서 만들어서 복합 값 타입이라고도 함
+ * - int, String과 같은 값 타입
  */

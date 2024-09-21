@@ -7,8 +7,10 @@ open class Child(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Long? = null,
+
     open var name: String,
-    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     open var parent: Parent?
 ) {

@@ -6,8 +6,20 @@ import jakarta.persistence.*
 open class Parent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    open var id: Long? = null
 
     @Column(name = "name")
-    var name: String = ""
+    open var name: String = ""
+
+    @OneToMany(
+        mappedBy = "parent",
+//        cascade = [CascadeType.ALL],
+//        orphanRemoval = true
+    )
+    open val children: MutableList<Child> = mutableListOf()
+
+    fun addChild(child: Child) {
+        children.add(child)
+        child.parent = this
+    }
 }
