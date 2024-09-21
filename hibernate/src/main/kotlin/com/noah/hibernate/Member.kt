@@ -1,6 +1,8 @@
 package com.noah.hibernate
 
 import jakarta.persistence.*
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * 연관관계의 주인(Owner)
@@ -30,5 +32,28 @@ open class Member(
     open var team: Team? = null,
 
     @Column(name = "username")
-    open var username: String
+    open var username: String,
+
+    @Embedded
+    open var period: Period? = null,
+
+    @Embedded
+    open var address: Address? = null
 )
+
+@Embeddable
+class Address(
+    var city: String,
+    var street: String,
+    var zipcode: String
+) {
+    constructor() : this("", "", "")
+}
+
+@Embeddable
+class Period(
+    var startDate: LocalDateTime,
+    var endDate: LocalDateTime
+) {
+    constructor() : this(LocalDateTime.now(), LocalDateTime.now())
+}

@@ -110,6 +110,9 @@ fun main(args: Array<String>) {
 
                 val findParent = em.find(Parent::class.java, parent.id)
                 println("findParent id = ${findParent.id}")
+                for (child in findParent.children) {
+                    println("child = ${child.name}")
+                }
                 println("findParent children = ${findParent.children.size}")
                 // orphanRemoval = true 설정 시 자식 엔티티를 삭제하면 부모 엔티티도 삭제된다.
 //                findParent.children.removeAt(0)
