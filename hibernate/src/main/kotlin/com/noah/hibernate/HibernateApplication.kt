@@ -87,36 +87,24 @@ fun main(args: Array<String>) {
             // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
             // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-                val parent = Parent()
-                parent.name = "parent"
+                val member = Member(username = "noah")
+                member.address = Address(city = "seoul", street = "gangnam", zipcode = "12345")
+                member.favoriteFoods.add("치킨")
+                member.favoriteFoods.add("피자")
+                member.addressHistory.add(Address(city = "seoul", street = "gangnam", zipcode = "12345"))
+                member.addressHistory.add(Address(city = "seoul", street = "samsung", zipcode = "12345"))
 
-                val child1 = Child()
-                val child2 = Child()
-                child1.name = "child1"
-                child2.name = "child2"
-
-//                parent.addChild(child1)
-//                parent.addChild(child2)
-                child1.parent = parent
-                child2.parent = parent
-
-                em.persist(parent)
-                em.persist(child1)
-                em.persist(child2)
-
-                // 영속성 컨텍스트 초기화
+                em.persist(member)
                 em.flush()
                 em.clear()
 
-                val findParent = em.find(Parent::class.java, parent.id)
-                println("findParent id = ${findParent.id}")
-                for (child in findParent.children) {
-                    println("child = ${child.name}")
+                val findMember = em.find(Member::class.java, member.id)
+                println("findMember = $findMember")
+                findMember.addressHistory.forEach {
+                    println(it.city)
+                    println(it.street)
+                    println(it.zipcode)
                 }
-                println("findParent children = ${findParent.children.size}")
-                // orphanRemoval = true 설정 시 자식 엔티티를 삭제하면 부모 엔티티도 삭제된다.
-//                findParent.children.removeAt(0)
-
                 transaction.commit()
             } catch (e: Exception) {
                 e.printStackTrace()

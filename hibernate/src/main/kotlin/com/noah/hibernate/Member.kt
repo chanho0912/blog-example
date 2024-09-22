@@ -27,22 +27,41 @@ open class Member(
     @Column(name = "member_id")
     open val id: Long = 0L,
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "team_id")
-    open var team: Team? = null,
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "team_id")
+//    open var team: Team? = null,
 
     @Column(name = "username")
     open var username: String,
 
-    @Embedded
-    open var period: Period? = null,
+    // 값 타입 컬렉션 -> 값 타입을 하나 이상 저장할 때 사용
+    // 값 타입은 생명주기를 엔티티에 의존
+    // 값 타입 컬렉션은 영속성 전이 + 고아 객체 제거 기능을 필수로 가진다.
+    // 값 타입 컬렉션은 기본이 Lazy로 조회한다.
+    // 값 타입은 엔티티와 다르게 식별자 개념이 없다.
+    // 값은 변경하면 추적이 어렵다.
+    // 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고, 값 타입 컬렉션에 있는 현재 값을 모두 다시 저장한다.
+    @ElementCollection
+    @CollectionTable(
+        name = "favorite_food",
+        joinColumns = [JoinColumn(name = "member_id")]
+    )
+    @Column(name = "food_name")
+    open var favoriteFoods: MutableSet<String> = mutableSetOf(),
+
+    @ElementCollection
+    @CollectionTable(
+        name = "address",
+        joinColumns = [JoinColumn(name = "member_id")]
+    )
+    open var addressHistory: MutableList<Address> = mutableListOf(),
 
     @Embedded
     open var address: Address? = null
 )
 
 @Embeddable
-class Address(
+data class Address(
     var city: String,
     var street: String,
     var zipcode: String
@@ -51,7 +70,7 @@ class Address(
 }
 
 @Embeddable
-class Period(
+data class Period(
     var startDate: LocalDateTime,
     var endDate: LocalDateTime
 ) {
