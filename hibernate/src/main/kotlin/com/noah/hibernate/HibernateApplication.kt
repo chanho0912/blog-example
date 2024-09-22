@@ -72,6 +72,10 @@ import jakarta.persistence.Persistence
  */
 class HibernateApplication
 
+/**
+ * JPQL - Java Persistence Query Language
+ * JPQL은 객체 지향 쿼리 언어
+ */
 fun main(args: Array<String>) {
 
     // EntityManagerFactory는 애플리케이션 실행 시점에 한번만 생성되어야 한다.
@@ -83,41 +87,13 @@ fun main(args: Array<String>) {
             val transaction = em.transaction
             transaction.begin()
 
-            // 양방향 연관관계를 설정할 때는 순수 객체 상태를 고려하여 양쪽에 값을 설정해야 한다.
-            // 1. flush, clear를 하지 않으면 1차 캐시에 저장된 데이터를 사용한다.
-            // 2. test시에 JPA를 사용하지 않으면 온전하지 못한 값으로 테스트를 할 수도 있다.
             try {
-                val member = Member(username = "noah")
-                member.address = Address(city = "seoul", street = "gangnam", zipcode = "12345")
-                member.favoriteFoods.add("치킨")
-                member.favoriteFoods.add("피자")
-                member.addressHistory.add(Address(city = "seoul", street = "gangnam", zipcode = "12345"))
-                member.addressHistory.add(Address(city = "seoul", street = "samsung", zipcode = "12345"))
 
-                em.persist(member)
-                em.flush()
-                em.clear()
-
-                val findMember = em.find(Member::class.java, member.id)
-                println("findMember = $findMember")
-                findMember.addressHistory.forEach {
-                    println(it.city)
-                    println(it.street)
-                    println(it.zipcode)
-                }
                 transaction.commit()
             } catch (e: Exception) {
                 e.printStackTrace()
                 transaction.rollback()
             }
         }
-
-        // hibernate spec 직접 사용
-//        emf.unwrap(SessionFactory::class.java).openSession().use { session ->
-//            session.beginTransaction()
-//            val member = session.get(Member::class.java, 1L)
-//            println(member)
-//            session.transaction.commit()
-//        }
     }
 }
