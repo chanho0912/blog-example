@@ -35,4 +35,10 @@ package com.noah.hibernate.jpql
  * 페이징 API
  * setFirstResult(int startPosition): 조회 시작 위치 (0부터 시작)
  * setMaxResults(int maxResult): 조회할 데이터 수
+ *
+ * JPA 서브 쿼리 한계
+ * - JPA는 WHERE, HAVING 절에서만 서브 쿼리 사용 가능
+ * - SELECT 절도 가능 (하이버네이트에서 지원)
+ * - FROM 절의 서브 쿼리는 현재 JPQL에서 불가능
+ * - 조인으로 풀 수 있으면 풀어서 해결
  */
