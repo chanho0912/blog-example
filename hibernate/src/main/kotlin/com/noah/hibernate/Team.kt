@@ -19,6 +19,6 @@ open class Team(
     open var name: String,
 
     // 나는 team으로 mapping 되어 있다.
-//    @OneToMany(mappedBy = "team")
-//    open val members: MutableList<Member> = mutableListOf()
+    @OneToMany(mappedBy = "team")
+    open val members: MutableList<Member> = mutableListOf()
 )

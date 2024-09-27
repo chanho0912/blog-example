@@ -89,6 +89,33 @@ fun main(args: Array<String>) {
 
             try {
 
+                val team1 = Team(name = "team1")
+                val team2 = Team(name = "team2")
+                val team3 = Team(name = "team3")
+
+                val member1 = Member(username = "member1", team = team1)
+                val member2 = Member(username = "member2", team = team1)
+                val member3 = Member(username = "member3", team = team2)
+                val member4 = Member(username = "member4", team = null)
+
+                em.persist(team1)
+                em.persist(team2)
+                em.persist(team3)
+                em.persist(member1)
+                em.persist(member2)
+                em.persist(member3)
+                em.persist(member4)
+
+                em.flush()
+                em.clear()
+
+                val query = em.createQuery("select t from Team t join fetch t.members", Team::class.java)
+//                val query = em.createQuery("select m from Member m", Member::class.java)
+//                val query = em.createQuery("select m.team from Member m", Team::class.java)
+                val resultList = query.resultList
+                for (team in resultList) {
+                    println("team: ${team.name} members = ${team.members.size}")
+                }
                 transaction.commit()
             } catch (e: Exception) {
                 e.printStackTrace()
