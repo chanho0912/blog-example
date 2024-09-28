@@ -110,9 +110,11 @@ fun main(args: Array<String>) {
                 em.clear()
 
                 val query = em.createQuery("select t from Team t join fetch t.members", Team::class.java)
+//                val query = em.createQuery("select t from Team t join t.members", Team::class.java)
 //                val query = em.createQuery("select m from Member m", Member::class.java)
 //                val query = em.createQuery("select m.team from Member m", Team::class.java)
                 val resultList = query.resultList
+                println("resultList.size = ${resultList.size}")
                 for (team in resultList) {
                     println("team: ${team.name} members = ${team.members.size}")
                 }
