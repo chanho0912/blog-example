@@ -7,5 +7,6 @@ include(
     "simple-item-service",
     "spring-cloud:config-server",
     "spring-cloud:config-client",
-    "hibernate"
+    "hibernate",
+    "jpa-shop"
 )
