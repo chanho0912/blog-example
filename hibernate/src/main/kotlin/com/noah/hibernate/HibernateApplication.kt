@@ -109,14 +109,19 @@ fun main(args: Array<String>) {
                 em.flush()
                 em.clear()
 
-                val query = em.createQuery("select t from Team t join fetch t.members", Team::class.java)
+                val query = em.createNamedQuery("Member.findByUsername", Member::class.java)
+                    .setParameter("username", "member1")
+//                val query = em.createQuery("select t from Team t join fetch t.members", Team::class.java)
 //                val query = em.createQuery("select t from Team t join t.members", Team::class.java)
 //                val query = em.createQuery("select m from Member m", Member::class.java)
 //                val query = em.createQuery("select m.team from Member m", Team::class.java)
                 val resultList = query.resultList
                 println("resultList.size = ${resultList.size}")
-                for (team in resultList) {
-                    println("team: ${team.name} members = ${team.members.size}")
+//                for (team in resultList) {
+//                    println("team: ${team.name} members = ${team.members.size}")
+//                }
+                for (member in resultList) {
+                    println("member: ${member.username}")
                 }
                 transaction.commit()
             } catch (e: Exception) {

@@ -22,6 +22,11 @@ import java.time.LocalDateTime
  */
 @Entity
 @Table(name = "member_jpa")
+// Spring Data JPA에서는 @Query 애노테이션으로 사용.
+@NamedQuery(
+    name = "Member.findByUsername",
+    query = "select m from Member m where m.username = :username"
+)
 open class Member(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
