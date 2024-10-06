@@ -19,12 +19,17 @@ class Category(
         joinColumns = [JoinColumn(name = "category_id")],
         inverseJoinColumns = [JoinColumn(name = "item_id")]
     )
-    val items: Set<Item> = mutableSetOf(),
+    val items: MutableSet<Item> = mutableSetOf(),
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    val parent: Category,
+    var parent: Category,
 
     @OneToMany(mappedBy = "parent")
-    val children: Set<Category> = mutableSetOf()
-)
+    val children: MutableSet<Category> = mutableSetOf()
+) {
+    fun addChildCategory(child: Category) {
+        children.add(child)
+        child.parent = this
+    }
+}

@@ -21,5 +21,5 @@ class Member(
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
     )
-    val orders: Set<Order> = mutableSetOf()
+    val orders: MutableSet<Order> = mutableSetOf()
 )

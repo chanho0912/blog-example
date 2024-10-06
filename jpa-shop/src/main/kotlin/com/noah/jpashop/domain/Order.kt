@@ -12,22 +12,37 @@ class Order(
     @Column(name = "order_id")
     @Id val id: Long = 0L,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    val member: Member,
+    var member: Member,
 
     val orderedAt: ZonedDateTime,
 
     @Enumerated(EnumType.STRING)
     val status: OrderStatus,
 
-    @OneToMany(mappedBy = "order")
-    val orderItems: Set<OrderItem> = mutableSetOf(),
+    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL])
+    val orderItems: MutableSet<OrderItem> = mutableSetOf(),
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "delivery_id")
-    val delivery: Delivery
-)
+    var delivery: Delivery
+) {
+    fun setMember(member: Member) {
+        member.orders.add(this)
+        this.member = member
+    }
+
+    fun addOrderItem(orderItem: OrderItem) {
+        orderItems.add(orderItem)
+        orderItem.order = this
+    }
+
+    fun setDelivery(delivery: Delivery) {
+        delivery.order = this
+        this.delivery = delivery
+    }
+}
 
 enum class OrderStatus {
     ORDER, CANCEL

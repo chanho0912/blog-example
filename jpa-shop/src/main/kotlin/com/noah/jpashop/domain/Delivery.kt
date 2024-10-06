@@ -11,8 +11,8 @@ class Delivery (
     @Id
     val id: Long = 0L,
 
-    @OneToOne(mappedBy = "delivery")
-    val order: Order,
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
+    var order: Order,
 
     @Embedded
     val address: Address,

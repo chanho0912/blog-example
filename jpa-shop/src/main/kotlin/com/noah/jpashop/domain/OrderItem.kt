@@ -11,13 +11,13 @@ class OrderItem(
     @Column(name = "order_item_id")
     @Id val id: Long = 0L,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     val item: Item,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    val order: Order,
+    var order: Order,
 
     val orderPrice: Int,
 
