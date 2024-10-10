@@ -14,7 +14,7 @@ class MemberService(
 ) {
     fun join(member: Member): Long {
         // 회원 가입
-        memberServiceValidator.validateDuplicateMember(member.id)
+        memberServiceValidator.validateDuplicateMember(member.name)
         memberRepository.save(member)
         return member.id
     }
