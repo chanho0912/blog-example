@@ -1,5 +1,7 @@
 package com.noah.object.reservation.procedural.reservation.domain;
 
+import com.noah.object.reservation.procedural.generic.TimeInterval;
+
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -56,9 +58,8 @@ public class Screening {
         this.screeningTime = screeningTime;
     }
 
-    public boolean isPlayedIn(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
+    public boolean isPlayedIn(DayOfWeek dayOfWeek, TimeInterval interval) {
         return this.screeningTime.getDayOfWeek().equals(dayOfWeek) &&
-                (this.screeningTime.toLocalTime().equals(startTime) || this.screeningTime.toLocalTime().isAfter(startTime)) &&
-                (this.screeningTime.toLocalTime().equals(endTime) || this.screeningTime.toLocalTime().isBefore(endTime));
+                interval.isIncluded(this.screeningTime.toLocalTime());
     }
 }

@@ -1,6 +1,7 @@
 package com.noah.javaexample;
 
 import com.noah.object.reservation.procedural.generic.Money;
+import com.noah.object.reservation.procedural.generic.TimeInterval;
 import com.noah.object.reservation.procedural.reservation.domain.DiscountCondition;
 import com.noah.object.reservation.procedural.reservation.domain.DiscountPolicy;
 import com.noah.object.reservation.procedural.reservation.domain.Movie;
@@ -57,10 +58,10 @@ public class JavaExampleApplication {
         DiscountPolicy discountPolicy = new DiscountPolicy(movie.getId(), AMOUNT_POLICY, Money.wons(1000), null);
         discountPolicyDAO.insert(discountPolicy);
 
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, null, 1));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, null, 10));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, MONDAY, of(10, 0), of(12, 0), null));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, WEDNESDAY, of(18, 0), of(21, 0), null));
+        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 1));
+        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 10));
+        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, MONDAY, new TimeInterval(of(10, 0), of(12, 0)), null));
+        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, WEDNESDAY, new TimeInterval(of(18, 0), of(21, 0)), null));
 
         Screening screening = new Screening(movie.getId(), 7, LocalDateTime.of(2024, 12, 11, 18, 0));
         screeningDAO.insert(screening);

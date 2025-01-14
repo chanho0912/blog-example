@@ -14,6 +14,10 @@ import com.noah.object.reservation.procedural.reservation.persistence.ScreeningD
 
 import java.util.List;
 
+/**
+ * 절차적인 설계에 문제가 발생할 때
+ * - 데이터를 구현한 코드가 변경될 때
+ */
 public class ReservationService {
     private ScreeningDAO screeningDAO;
     private MovieDAO movieDAO;
@@ -58,12 +62,18 @@ public class ReservationService {
         for(DiscountCondition condition : conditions) {
             if (condition.isPeriodCondition()) {
                 if (screening.isPlayedIn(condition.getDayOfWeek(),
-                                         condition.getStartTime(),
-                                         condition.getEndTime())) {
+                                         condition.getInterval())) {
                     return condition;
                 }
-            } else {
+            } else if (condition.isSequenceCondition()) {
                 if (condition.getSequence().equals(screening.getSequence())) {
+                    return condition;
+                }
+                // Discount Condition이 수정되었고, Process도 함께 수정되었음.
+            } else if (condition.isCombinedCondition()) {
+                if ((condition.getSequence().equals(screening.getSequence())) &&
+                    (screening.isPlayedIn(condition.getDayOfWeek(),
+                                          condition.getInterval()))) {
                     return condition;
                 }
             }
