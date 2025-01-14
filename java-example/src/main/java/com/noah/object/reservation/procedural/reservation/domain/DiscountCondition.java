@@ -33,64 +33,35 @@ public class DiscountCondition {
         this.sequence = sequence;
     }
 
-    public Long getId() {
-        return id;
-    }
+    // Discount Condition으로 책임 이동.
+    public boolean isSatisfiedBy(Screening screening) {
+        if (isPeriodCondition()) {
+            return screening.isPlayedIn(dayOfWeek, interval);
+        } else if (isSequenceCondition()) {
+            return sequence.equals(screening.getSequence());
+        } else if (isCombinedCondition()) {
+            return sequence.equals(screening.getSequence()) &&
+                    screening.isPlayedIn(dayOfWeek, interval);
+        }
 
-    public void setId(Long id) {
-        this.id = id;
+        return false;
     }
 
     public Long getPolicyId() {
         return policyId;
     }
 
-    public void setPolicyId(Long policyId) {
-        this.policyId = policyId;
-    }
-
-    public boolean isPeriodCondition() {
+    private boolean isPeriodCondition() {
         return ConditionType.PERIOD_CONDITION.equals(conditionType);
     }
 
-    public TimeInterval getInterval() {
-        return interval;
-    }
-
-    public void setInterval(TimeInterval interval) {
-        this.interval = interval;
-    }
-
-    public boolean isSequenceCondition() {
+    private boolean isSequenceCondition() {
         return ConditionType.SEQUENCE_CONDITION.equals(conditionType);
     }
 
     // 요구사항 추가
-    public boolean isCombinedCondition() {
+    private boolean isCombinedCondition() {
         return ConditionType.COMBINED_CONDITION.equals(conditionType);
     }
 
-    public ConditionType getConditionType() {
-        return conditionType;
-    }
-
-    public void setConditionType(ConditionType conditionType) {
-        this.conditionType = conditionType;
-    }
-
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
 }
