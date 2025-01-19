@@ -20,6 +20,8 @@ import com.noah.object.reservation.procedural.reservation.persistence.memory.Scr
 import com.noah.object.reservation.procedural.reservation.service.ReservationService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.noah.object.reservation.procedural.reservation.domain.DiscountCondition.ConditionType.PERIOD_CONDITION;
 import static com.noah.object.reservation.procedural.reservation.domain.DiscountCondition.ConditionType.SEQUENCE_CONDITION;
@@ -47,7 +49,6 @@ public class JavaExampleApplication {
             screeningDAO,
             movieDAO,
             discountPolicyDAO,
-            discountConditionDAO,
             reservationDAO);
 
 
@@ -55,13 +56,20 @@ public class JavaExampleApplication {
         Movie movie = new Movie("한산", 150, Money.wons(10000));
         movieDAO.insert(movie);
 
-        DiscountPolicy discountPolicy = new DiscountPolicy(movie.getId(), AMOUNT_POLICY, Money.wons(1000), null);
+        DiscountPolicy discountPolicy = new DiscountPolicy(movie.getId(), AMOUNT_POLICY, Money.wons(1000), null, new ArrayList<>());
         discountPolicyDAO.insert(discountPolicy);
 
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 1));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 10));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, MONDAY, new TimeInterval(of(10, 0), of(12, 0)), null));
-        discountConditionDAO.insert(new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, WEDNESDAY, new TimeInterval(of(18, 0), of(21, 0)), null));
+        List<DiscountCondition> conditions = List.of(
+                new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 1),
+                new DiscountCondition(discountPolicy.getId(), SEQUENCE_CONDITION, null, null, 10),
+                new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, MONDAY, new TimeInterval(of(10, 0), of(12, 0)), null),
+                new DiscountCondition(discountPolicy.getId(), PERIOD_CONDITION, WEDNESDAY, new TimeInterval(of(18, 0), of(21, 0)), null)
+        );
+
+        for (DiscountCondition condition : conditions) {
+            discountConditionDAO.insert(condition);
+            discountPolicy.addCondition(condition);
+        }
 
         Screening screening = new Screening(movie.getId(), 7, LocalDateTime.of(2024, 12, 11, 18, 0));
         screeningDAO.insert(screening);

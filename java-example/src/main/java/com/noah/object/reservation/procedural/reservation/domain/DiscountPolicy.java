@@ -2,6 +2,9 @@ package com.noah.object.reservation.procedural.reservation.domain;
 
 import com.noah.object.reservation.procedural.generic.Money;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DiscountPolicy {
     public enum PolicyType { PERCENT_POLICY, AMOUNT_POLICY }
 
@@ -10,20 +13,26 @@ public class DiscountPolicy {
     private PolicyType policyType;
     private Money amount;
     private Double percent;
+    private List<DiscountCondition> conditions = new ArrayList<>();
 
     public DiscountPolicy() {
     }
 
-    public DiscountPolicy(Long movieId, PolicyType policyType, Money amount, Double percent) {
-        this(null, movieId, policyType, amount, percent);
+    public DiscountPolicy(Long movieId, PolicyType policyType, Money amount, Double percent, List<DiscountCondition> conditions) {
+        this(null, movieId, policyType, amount, percent, conditions);
     }
 
-    public DiscountPolicy(Long id, Long movieId, PolicyType policyType, Money amount, Double percent) {
+    public DiscountPolicy(Long id, Long movieId, PolicyType policyType, Money amount, Double percent, List<DiscountCondition> conditions) {
         this.id = id;
         this.movieId = movieId;
         this.policyType = policyType;
         this.amount = amount;
         this.percent = percent;
+        this.conditions = conditions;
+    }
+
+    public void addCondition(DiscountCondition discountCondition) {
+        this.conditions.add(discountCondition);
     }
 
     public Long getId() {
@@ -42,7 +51,13 @@ public class DiscountPolicy {
         this.movieId = movieId;
     }
 
-    public Money calculateDiscount(Movie movie) {
+    public Money calculateDiscount(Movie movie, Screening screening) {
+        DiscountCondition condition = findDiscountCondition(screening);
+
+        if (condition == null) {
+            return Money.ZERO;
+        }
+
         if (isAmountPolicy()) {
             return amount;
         } else if (isPercentPolicy()) {
@@ -50,6 +65,16 @@ public class DiscountPolicy {
         }
 
         return Money.ZERO;
+    }
+
+    public DiscountCondition findDiscountCondition(Screening screening) {
+        for(DiscountCondition condition : conditions) {
+            if (condition.isSatisfiedBy(screening)) {
+                return condition;
+            }
+        }
+
+        return null;
     }
 
     public boolean isAmountPolicy() {
