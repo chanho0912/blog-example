@@ -13,18 +13,22 @@ spring:
         characterEncoding: UTF-8
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa:
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
         connection:
           useUnicode: true
           characterEncoding: utf8
-
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
 logging:
   level:
     org:
-      hibernate:
-        resource:
-          transaction: DEBUG
+      hibernate.SQL: DEBUG
+#        resource:
+#          transaction: DEBUG
       springframework:
         orm:
           jpa:

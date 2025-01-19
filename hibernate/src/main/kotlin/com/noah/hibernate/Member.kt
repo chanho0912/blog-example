@@ -32,9 +32,8 @@ open class Member(
     @Column(name = "member_id")
     open val id: Long = 0L,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    open var team: Team? = null,
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    open var team: Team? = null,
 
     @Column(name = "username")
     open var username: String,

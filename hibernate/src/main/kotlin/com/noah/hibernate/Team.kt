@@ -12,13 +12,14 @@ import jakarta.persistence.*
 @Table(name = "team")
 open class Team(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
-    open val id: Long = 0L,
+    open val id: Long? = null,
 
     open var name: String,
 
-    // 나는 team으로 mapping 되어 있다.
-    @OneToMany(mappedBy = "team")
+    @OneToMany
+    @JoinColumn(name = "team_id")
     open val members: MutableList<Member> = mutableListOf()
 )

@@ -2,6 +2,7 @@ package com.noah.datajpa.transaction
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import mu.KotlinLogging
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 
@@ -38,4 +39,5 @@ class OrderServiceTest(
             findOrder.payStatus shouldBe "wait"
         }
     }
+
 })

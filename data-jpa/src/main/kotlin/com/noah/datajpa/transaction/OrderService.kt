@@ -1,12 +1,15 @@
 package com.noah.datajpa.transaction
 
+import jakarta.persistence.EntityManager
 import mu.KotlinLogging
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class OrderService(
-    private val repository: OrderRepository
+    private val repository: OrderRepository,
+    private val em: EntityManager
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -32,5 +35,14 @@ class OrderService(
             }
         }
         logger.info { "pay process end" }
+    }
+
+    @Transactional(readOnly = true)
+    fun findById(id: Long): Order? {
+        val order = repository.findByIdOrNull(id)!!
+        val order2 = em.createQuery("select o from Order o where o.id = :id", Order::class.java)
+            .setParameter("id", id)
+            .singleResult
+        return order
     }
 }
