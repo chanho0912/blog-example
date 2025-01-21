@@ -1,5 +1,6 @@
 package com.noah.entity
 
+import com.noah.common.ClientUtils
 import jakarta.persistence.Embeddable
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -7,8 +8,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.springframework.security.oauth2.core.AuthorizationGrantType
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings
@@ -25,11 +24,7 @@ class ClientEntity(
 
     private val clientId: String,
 
-    private val clientIdIssuedAt: ZonedDateTime,
-
     private val clientSecret: String,
-
-    private val clientSecretExpiresAt: ZonedDateTime,
 
     private val clientName: String,
 
@@ -135,16 +130,15 @@ class ClientEntity(
         return RegisteredClient.withId(id.toString())
             .clientId(clientId)
             .clientSecret(clientSecret)
-            .clientSecretExpiresAt(clientSecretExpiresAt.toInstant())
             .clientName(clientName)
             .clientAuthenticationMethods { methods ->
                 StringUtils.commaDelimitedListToSet(clientAuthenticationMethods).forEach {
-                    methods.add(resolveClientAuthenticationMethods(it))
+                    methods.add(ClientUtils.resolveClientAuthenticationMethods(it))
                 }
             }
             .authorizationGrantTypes { types ->
                 StringUtils.commaDelimitedListToSet(authorizationGrantTypes).forEach {
-                    types.add(resolveAuthorizationGrantType(it))
+                    types.add(ClientUtils.resolveAuthorizationGrantType(it))
                 }
             }
             .scopes { scopes ->
@@ -157,24 +151,6 @@ class ClientEntity(
             .build()
     }
 
-    private fun resolveClientAuthenticationMethods(clientAuthenticationMethod: String): ClientAuthenticationMethod? =
-        when (clientAuthenticationMethod) {
-            ClientAuthenticationMethod.CLIENT_SECRET_BASIC.value -> ClientAuthenticationMethod.CLIENT_SECRET_BASIC
-            ClientAuthenticationMethod.CLIENT_SECRET_POST.value -> ClientAuthenticationMethod.CLIENT_SECRET_POST
-            ClientAuthenticationMethod.PRIVATE_KEY_JWT.value -> ClientAuthenticationMethod.PRIVATE_KEY_JWT
-            ClientAuthenticationMethod.CLIENT_SECRET_JWT.value -> ClientAuthenticationMethod.CLIENT_SECRET_JWT
-            else -> throw IllegalArgumentException("Unknown client authentication method: $clientAuthenticationMethods")
-        }
-
-    private fun resolveAuthorizationGrantType(authorizationGrantType: String): AuthorizationGrantType {
-
-        return when (authorizationGrantType) {
-            AuthorizationGrantType.AUTHORIZATION_CODE.value -> return AuthorizationGrantType.AUTHORIZATION_CODE
-            AuthorizationGrantType.CLIENT_CREDENTIALS.value -> return AuthorizationGrantType.CLIENT_CREDENTIALS
-            AuthorizationGrantType.REFRESH_TOKEN.value -> return AuthorizationGrantType.REFRESH_TOKEN
-            else -> AuthorizationGrantType(authorizationGrantType) // Custom authorization grant type
-        }
-    }
 }
 
 @Embeddable

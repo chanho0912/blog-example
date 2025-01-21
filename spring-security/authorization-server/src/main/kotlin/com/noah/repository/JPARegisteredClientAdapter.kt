@@ -6,15 +6,23 @@ import com.noah.entity.TokenSetting
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.StringUtils
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 
 @Component
+@Transactional
 class JPARegisteredClientAdapter(
     private val clientRepository: ClientRepository
 ) : RegisteredClientRepository {
+
+    fun saveAndGetClientId(registeredClient: RegisteredClient): String {
+        clientRepository.save(registeredClient.toEntity())
+        return registeredClient.clientId
+    }
+
     override fun save(registeredClient: RegisteredClient) {
         clientRepository.save(registeredClient.toEntity())
     }
@@ -49,9 +57,7 @@ class JPARegisteredClientAdapter(
 
         return ClientEntity(
             clientId = this.clientId,
-            clientIdIssuedAt = ZonedDateTime.ofInstant(this.clientIdIssuedAt, ZoneId.systemDefault()),
             clientSecret = requireNotNull(this.clientSecret),
-            clientSecretExpiresAt = ZonedDateTime.ofInstant(this.clientSecretExpiresAt, ZoneId.systemDefault()),
             clientName = this.clientName,
             clientAuthenticationMethods = StringUtils.collectionToCommaDelimitedString(clientAuthenticationMethods),
             authorizationGrantTypes = StringUtils.collectionToCommaDelimitedString(authorizationGrantTypes),

@@ -36,3 +36,4 @@ logging:
             DataSourceTransactionManager: DEBUG
         transaction:
           interceptor: TRACE
+    org.springframework.security: DEBUG
