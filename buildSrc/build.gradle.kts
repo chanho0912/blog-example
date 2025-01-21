@@ -44,5 +44,5 @@ dependencies {
     // The Spring Boot Gradle Plugin provides Spring Boot support in Gradle.
     // It allows you to package executable jar or war archives, run Spring Boot applications,
     // and use the dependency management provided by spring-boot-dependencies
-    add("implementation", "org.springframework.boot:spring-boot-gradle-plugin:3.2.0")
+    add("implementation", "org.springframework.boot:spring-boot-gradle-plugin:3.4.0")
 }
