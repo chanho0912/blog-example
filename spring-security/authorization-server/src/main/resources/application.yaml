@@ -14,7 +14,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         connection:
@@ -36,4 +36,4 @@ logging:
             DataSourceTransactionManager: DEBUG
         transaction:
           interceptor: TRACE
-    org.springframework.security: DEBUG
+    org.springframework.security: trace

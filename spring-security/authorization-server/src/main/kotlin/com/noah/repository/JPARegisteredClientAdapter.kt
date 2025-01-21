@@ -3,6 +3,7 @@ package com.noah.repository
 import com.noah.entity.ClientEntity
 import com.noah.entity.ClientSetting
 import com.noah.entity.TokenSetting
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.stereotype.Component
@@ -15,7 +16,8 @@ import java.time.ZonedDateTime
 @Component
 @Transactional
 class JPARegisteredClientAdapter(
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val passwordEncoder: PasswordEncoder
 ) : RegisteredClientRepository {
 
     fun saveAndGetClientId(registeredClient: RegisteredClient): String {
@@ -57,7 +59,7 @@ class JPARegisteredClientAdapter(
 
         return ClientEntity(
             clientId = this.clientId,
-            clientSecret = requireNotNull(this.clientSecret),
+            clientSecret = passwordEncoder.encode(requireNotNull(this.clientSecret)),
             clientName = this.clientName,
             clientAuthenticationMethods = StringUtils.collectionToCommaDelimitedString(clientAuthenticationMethods),
             authorizationGrantTypes = StringUtils.collectionToCommaDelimitedString(authorizationGrantTypes),

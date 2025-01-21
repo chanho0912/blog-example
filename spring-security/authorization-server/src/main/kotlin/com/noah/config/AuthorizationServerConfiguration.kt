@@ -10,7 +10,8 @@ import com.noah.repository.JPARegisteredClientAdapter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder
@@ -40,21 +41,25 @@ class AuthorizationServerConfiguration {
         jwtEncoder: JwtEncoder,
         settings: AuthorizationServerSettings,
     ): SecurityFilterChain {
-        return http.with(OAuth2AuthorizationServerConfigurer()) { configurer ->
-            configurer.registeredClientRepository(registeredClientRepository)
-                .authorizationService(authorizationService)
-                .tokenGenerator(JwtGenerator(jwtEncoder))
-                .authorizationServerSettings(settings)
+        val authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer()
 
-        }.httpBasic { httpBasic ->
-            httpBasic.disable()
-        }.formLogin { formLogin ->
-            formLogin.disable()
-        }.csrf { csrf ->
-            csrf.ignoringRequestMatchers("/api/v1/oauth2/clients")
-        }.authorizeHttpRequests { authz ->
-            authz.requestMatchers("/api/v1/oauth2/clients").permitAll()
-        }
+        return http
+            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+            .with(authorizationServerConfigurer) { configurer ->
+                configurer.registeredClientRepository(registeredClientRepository)
+                    .authorizationService(authorizationService)
+                    .tokenGenerator(JwtGenerator(jwtEncoder))
+                    .authorizationServerSettings(settings)
+
+            }
+            .httpBasic { httpBasic ->
+                httpBasic.disable()
+            }.formLogin { formLogin ->
+                formLogin.disable()
+            }
+            .authorizeHttpRequests { auth ->
+                auth.anyRequest().authenticated()
+            }
             .build()
     }
 
@@ -81,8 +86,14 @@ class AuthorizationServerConfiguration {
         }
 
     @Bean
-    fun registeredClientRepository(clientRepository: ClientRepository): RegisteredClientRepository =
-        JPARegisteredClientAdapter(clientRepository)
+    fun registeredClientRepository(
+        clientRepository: ClientRepository,
+        passwordEncoder: PasswordEncoder
+    ): RegisteredClientRepository =
+        JPARegisteredClientAdapter(clientRepository, passwordEncoder)
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun authorizationService(): OAuth2AuthorizationService = InMemoryOAuth2AuthorizationService()
@@ -95,7 +106,7 @@ class AuthorizationServerConfiguration {
     fun jwtEncoder(jwkSource: JWKSource<SecurityContext>): JwtEncoder =
         NimbusJwtEncoder(jwkSource)
 
-    @Bean
-    fun authorizationServerSettings(): AuthorizationServerSettings =
-        AuthorizationServerSettings.builder().tokenEndpoint("/sample/oauth2/token").build()
+//    @Bean
+//    fun authorizationServerSettings(): AuthorizationServerSettings =
+//        AuthorizationServerSettings.builder().tokenEndpoint("/sample/oauth2/token").build()
 }

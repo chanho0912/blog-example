@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings
 import org.springframework.util.StringUtils
 import java.time.Duration
-import java.time.ZonedDateTime
 
 
 @Entity
