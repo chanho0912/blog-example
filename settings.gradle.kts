@@ -8,5 +8,7 @@ include(
     "spring-cloud:config-server",
     "spring-cloud:config-client",
     "hibernate",
-    "jpa-shop"
+    "jpa-shop",
+    "spring-security",
+    "spring-security:authorization-server"
 )
