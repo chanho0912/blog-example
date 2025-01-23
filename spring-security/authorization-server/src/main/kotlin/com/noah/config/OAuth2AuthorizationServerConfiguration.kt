@@ -20,9 +20,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
-import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
 import org.springframework.security.web.SecurityFilterChain
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -69,7 +67,9 @@ class OAuth2AuthorizationServerConfiguration {
         generator.setJwtCustomizer { context ->
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 val registeredClient = context.registeredClient
-                context.claims.audience(listOf(registeredClient.clientName))
+                context.claims.claims { claim ->
+                    claim.put("client_name", registeredClient.clientName)
+                }
             }
         }
         return generator
