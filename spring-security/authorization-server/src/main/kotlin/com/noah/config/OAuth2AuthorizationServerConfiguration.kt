@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer
@@ -30,7 +29,7 @@ import java.util.*
 
 
 @Configuration
-class AuthorizationServerConfiguration {
+class OAuth2AuthorizationServerConfiguration {
 
     @Bean
     fun filterChain(
@@ -51,7 +50,8 @@ class AuthorizationServerConfiguration {
             }
             .httpBasic { httpBasic ->
                 httpBasic.disable()
-            }.formLogin { formLogin ->
+            }
+            .formLogin { formLogin ->
                 formLogin.disable()
             }
             .authorizeHttpRequests { auth ->

@@ -6,6 +6,8 @@ import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -16,6 +18,7 @@ import java.util.concurrent.TimeUnit
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class OAuth2ResourceServerSecurityConfiguration {
 
     @Bean
@@ -32,8 +35,8 @@ class OAuth2ResourceServerSecurityConfiguration {
                     jwt.decoder(jwtDecoder(cacheManager()))
                 }
             }
-        return http.build()
         // @formatter:on
+        return http.build()
     }
 
     @Bean
