@@ -10,5 +10,6 @@ include(
     "hibernate",
     "jpa-shop",
     "spring-security",
-    "spring-security:authorization-server"
+    "spring-security:authorization-server",
+    "spring-security:resource-server"
 )

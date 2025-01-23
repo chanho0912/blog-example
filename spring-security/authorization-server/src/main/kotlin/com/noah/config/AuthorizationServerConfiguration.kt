@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder
-import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
@@ -37,7 +36,6 @@ class AuthorizationServerConfiguration {
     fun filterChain(
         http: HttpSecurity,
         registeredClientRepository: RegisteredClientRepository,
-        authorizationService: OAuth2AuthorizationService,
         jwtEncoder: JwtEncoder,
         settings: AuthorizationServerSettings,
     ): SecurityFilterChain {
@@ -47,7 +45,6 @@ class AuthorizationServerConfiguration {
             .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer) { configurer ->
                 configurer.registeredClientRepository(registeredClientRepository)
-                    .authorizationService(authorizationService)
                     .tokenGenerator(JwtGenerator(jwtEncoder))
                     .authorizationServerSettings(settings)
 
@@ -96,17 +93,10 @@ class AuthorizationServerConfiguration {
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun authorizationService(): OAuth2AuthorizationService = InMemoryOAuth2AuthorizationService()
-
-    @Bean
     fun jwtDecoder(jwkSource: JWKSource<SecurityContext>): JwtDecoder =
         OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource)
 
     @Bean
     fun jwtEncoder(jwkSource: JWKSource<SecurityContext>): JwtEncoder =
         NimbusJwtEncoder(jwkSource)
-
-//    @Bean
-//    fun authorizationServerSettings(): AuthorizationServerSettings =
-//        AuthorizationServerSettings.builder().tokenEndpoint("/sample/oauth2/token").build()
 }

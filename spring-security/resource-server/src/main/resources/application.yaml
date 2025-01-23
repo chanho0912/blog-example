@@ -1,6 +1,14 @@
+server:
+  port: 20081
+
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:20080/oauth2/jwks
   application:
-  name: authorization-server
+  name: resource-server
 
   datasource:
     url: jdbc:mysql://localhost:3306/example?useUnicode=true&characterEncoding=utf8mb4
@@ -37,6 +45,3 @@ logging:
         transaction:
           interceptor: TRACE
     org.springframework.security: trace
-
-server:
-  port: 20080
