@@ -15,11 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
 import org.springframework.security.web.SecurityFilterChain
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -34,9 +37,9 @@ class OAuth2AuthorizationServerConfiguration {
     @Bean
     fun filterChain(
         http: HttpSecurity,
-        registeredClientRepository: RegisteredClientRepository,
-        jwtEncoder: JwtEncoder,
+        jwtGenerator: JwtGenerator,
         settings: AuthorizationServerSettings,
+        registeredClientRepository: RegisteredClientRepository,
     ): SecurityFilterChain {
         val authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer()
 
@@ -44,7 +47,7 @@ class OAuth2AuthorizationServerConfiguration {
             .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer) { configurer ->
                 configurer.registeredClientRepository(registeredClientRepository)
-                    .tokenGenerator(JwtGenerator(jwtEncoder))
+                    .tokenGenerator(jwtGenerator)
                     .authorizationServerSettings(settings)
 
             }
@@ -58,6 +61,18 @@ class OAuth2AuthorizationServerConfiguration {
                 auth.anyRequest().authenticated()
             }
             .build()
+    }
+
+    @Bean
+    fun jwtTokenGenerator(jwtEncoder: JwtEncoder): JwtGenerator {
+        val generator = JwtGenerator(jwtEncoder)
+        generator.setJwtCustomizer { context ->
+            if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+                val registeredClient = context.registeredClient
+                context.claims.audience(listOf(registeredClient.clientName))
+            }
+        }
+        return generator
     }
 
     @Bean

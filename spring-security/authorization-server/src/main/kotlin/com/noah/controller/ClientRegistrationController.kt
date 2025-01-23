@@ -3,10 +3,12 @@ package com.noah.controller
 import com.noah.common.ClientUtils
 import com.noah.repository.JPARegisteredClientAdapter
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.Duration
 import java.util.*
 
 @RestController
@@ -30,6 +32,7 @@ data class ClientRegistration(
     val clientAuthenticationMethods: List<String>,
     val authorizationGrantTypes: List<String>,
     val scopes: List<String>,
+    val accessTokenTimeToLive: Long,
 ) {
     fun toRegisteredClient(): RegisteredClient {
         return RegisteredClient.withId("0")
@@ -47,6 +50,12 @@ data class ClientRegistration(
                 }.let(grantTypes::addAll)
             }
             .scopes { clientScopes -> clientScopes.addAll(scopes) }
+            .tokenSettings(
+                TokenSettings.builder()
+                    .accessTokenTimeToLive(Duration.ofSeconds(accessTokenTimeToLive))
+                    .refreshTokenTimeToLive(Duration.ofDays(60))
+                    .build()
+            )
             .build()
     }
 }
