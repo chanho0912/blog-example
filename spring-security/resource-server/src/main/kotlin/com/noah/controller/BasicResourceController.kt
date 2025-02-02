@@ -15,6 +15,6 @@ class BasicResourceController {
     fun getResources() = "Some Resources ..."
 
     @PostMapping
-    @PreAuthorize("hasAuthority('write')")
+    @PreAuthorize("hasAuthority('SCOPE_not_valid')")
     fun createResource() = "Resource created successfully..."
 }

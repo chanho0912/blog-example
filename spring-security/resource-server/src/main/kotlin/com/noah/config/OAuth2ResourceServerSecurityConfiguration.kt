@@ -1,18 +1,21 @@
 package com.noah.config
 
 import com.github.benmanes.caffeine.cache.Caffeine
+import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector
+import com.nimbusds.jose.proc.JWSKeySelector
+import com.nimbusds.jose.proc.SecurityContext
 import org.springframework.cache.CacheManager
 import org.springframework.cache.caffeine.CaffeineCacheManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 import org.springframework.security.web.SecurityFilterChain
+import java.net.URL
 import java.util.concurrent.TimeUnit
 
 
@@ -54,8 +57,15 @@ class OAuth2ResourceServerSecurityConfiguration {
 
     @Bean
     fun jwtDecoder(cacheManager: CacheManager): JwtDecoder {
-        return NimbusJwtDecoder.withJwkSetUri("http://localhost:20080/oauth2/jwks")
+        val jwkSetUrl = "http://localhost:20080/oauth2/jwks"
+        val jwsKeySelector: JWSKeySelector<SecurityContext> =
+            JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(URL(jwkSetUrl))
+
+        return NimbusJwtDecoder.withJwkSetUri(jwkSetUrl)
             .cache(cacheManager.getCache("jwkSetCache"))
+            .jwtProcessorCustomizer { processor ->
+                processor.jwsKeySelector = jwsKeySelector
+            }
             .build()
     }
 
