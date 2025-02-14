@@ -9,6 +9,7 @@ import com.noah.repository.ClientRepository
 import com.noah.repository.JPARegisteredClientAdapter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.CorsConfiguration
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.interfaces.RSAPrivateKey
@@ -42,12 +44,27 @@ class OAuth2AuthorizationServerConfiguration {
         val authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer()
 
         return http
-            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+//            .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
             .with(authorizationServerConfigurer) { configurer ->
                 configurer.registeredClientRepository(registeredClientRepository)
                     .tokenGenerator(jwtGenerator)
                     .authorizationServerSettings(settings)
 
+            }
+            .cors { cors ->
+                cors.configurationSource {
+                    val source = CorsConfiguration()
+                    source.apply {
+                        allowedOrigins = listOf("http://localhost:20081")
+                        allowedMethods = listOf("GET", "POST", "OPTIONS")
+                        allowedHeaders = listOf("*")
+                        allowCredentials = true
+                    }
+                    source
+                }
+            }
+            .csrf { csrf ->
+                csrf.disable()
             }
             .httpBasic { httpBasic ->
                 httpBasic.disable()
@@ -56,6 +73,7 @@ class OAuth2AuthorizationServerConfiguration {
                 formLogin.disable()
             }
             .authorizeHttpRequests { auth ->
+                auth.requestMatchers(HttpMethod.OPTIONS, "/oauth2/token").permitAll()
                 auth.anyRequest().authenticated()
             }
             .build()

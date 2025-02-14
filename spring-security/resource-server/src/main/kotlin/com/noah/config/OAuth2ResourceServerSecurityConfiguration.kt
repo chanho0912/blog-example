@@ -34,6 +34,7 @@ class OAuth2ResourceServerSecurityConfiguration {
                     .requestMatchers(HttpMethod.GET, "/api/v1/**").hasAuthority("SCOPE_read")
                     .anyRequest().authenticated()
             }
+            .cors { it.disable() }
             .oauth2ResourceServer { resourceServer ->
                 resourceServer.jwt { jwt ->
                     jwt.decoder(jwtDecoder(cacheManager()))
