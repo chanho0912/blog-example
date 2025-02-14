@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 class BasicResourceController {
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SCOPE_read')")
+//    @PreAuthorize("hasAuthority('SCOPE_read')")
     fun getResources() = "Some Resources ..."
 
     @PostMapping

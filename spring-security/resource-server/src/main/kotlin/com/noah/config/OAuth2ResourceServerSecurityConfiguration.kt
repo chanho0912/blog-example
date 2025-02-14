@@ -30,6 +30,7 @@ class OAuth2ResourceServerSecurityConfiguration {
         http
             .authorizeHttpRequests { auth ->
                 auth
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v1/**").hasAuthority("SCOPE_read")
                     .anyRequest().authenticated()
             }
